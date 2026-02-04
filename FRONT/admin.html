@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - Sushimi</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Header / Navegación -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1>SUSHIMI</h1>
+                <p class="tagline">Panel Administrador</p>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="menu.html">Menú</a>
+                <a href="localizaciones.html">Localizaciones</a>
+                <a href="reservas.html">Reservar</a>
+                <a href="mis-reservas.html">Mis Reservas</a>
+                <a href="admin.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h2>Panel de Administrador</h2>
+                <p>Gestión de reservas del sistema</p>
+                <div class="dev-notice">⚠️ Sin autenticación - Solo desarrollo</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3>Reservas Hoy</h3>
+                        <p class="stat-number" id="reservasHoy">-</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📆</div>
+                    <div class="stat-info">
+                        <h3>Esta Semana</h3>
+                        <p class="stat-number" id="reservasSemana">-</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-info">
+                        <h3>Pendientes</h3>
+                        <p class="stat-number" id="reservasPendientes">-</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✓</div>
+                    <div class="stat-info">
+                        <h3>Confirmadas</h3>
+                        <p class="stat-number" id="reservasConfirmadas">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <h3>Filtrar Reservas</h3>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="filtroFecha">Fecha</label>
+                        <input type="date" id="filtroFecha">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filtroLocalizacion">Localización</label>
+                        <select id="filtroLocalizacion">
+                            <option value="">Todas</option>
+                            <!-- Se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filtroEstado">Estado</label>
+                        <select id="filtroEstado">
+                            <option value="">Todos</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="cancelada">Cancelada</option>
+                            <option value="completada">Completada</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button id="btnAplicarFiltros" class="btn-filter">Aplicar Filtros</button>
+                        <button id="btnLimpiarFiltros" class="btn-clear">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lista de Reservas -->
+    <section class="reservations-section">
+        <div class="container">
+            <div class="loading" id="loading">
+                <p>Cargando reservas...</p>
+            </div>
+
+            <div id="reservasContainer" class="reservas-container" style="display: none;">
+                <div class="reservas-header">
+                    <h3>Todas las Reservas (<span id="totalReservas">0</span>)</h3>
+                    <button id="btnRefresh" class="btn-refresh">🔄 Actualizar</button>
+                </div>
+                <div class="table-container">
+                    <table class="reservas-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Cliente</th>
+                                <th>Teléfono</th>
+                                <th>Localización</th>
+                                <th>Mesa</th>
+                                <th>Personas</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservasTableBody">
+                            <!-- Se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="noReservas" class="no-reservas" style="display: none;">
+                <div class="no-reservas-icon">📅</div>
+                <h3>No hay reservas</h3>
+                <p>No se encontraron reservas con los filtros aplicados.</p>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <p>Error al cargar las reservas. Por favor, intenta de nuevo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para cambiar estado -->
+    <div id="modalEstado" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Cambiar Estado de Reserva</h3>
+            <div class="modal-body">
+                <p id="modalReservaInfo"></p>
+                <div class="form-group">
+                    <label for="nuevoEstado">Nuevo Estado:</label>
+                    <select id="nuevoEstado">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="cancelada">Cancelada</option>
+                        <option value="completada">Completada</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button id="btnGuardarEstado" class="btn-primary">Guardar</button>
+                    <button id="btnCancelarModal" class="btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sushimi</h3>
+                    <p>Experiencia japonesa auténtica desde 2025</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Domingo</p>
+                    <p>12:00 - 23:30</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@sushimi.com</p>
+                    <p>Tel: +34 912 345 678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sushimi. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

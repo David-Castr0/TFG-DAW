@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localizaciones - Sushimi</title>
+    <link rel="stylesheet" href="css/localizaciones.css">
+</head>
+<body>
+    <!-- Header / Navegación -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1>SUSHIMI</h1>
+                <p class="tagline">Tradición Japonesa</p>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="menu.html">Menú</a>
+                <a href="reservas.html">Reservar</a>
+                <a href="mis-reservas.html">Mis reservas</a>
+                <a href="login.html" class="btn-nav-login">Iniciar Sesión</a>
+                <a href="register.html" class="btn-nav-register">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h2>Nuestros Restaurantes</h2>
+                <p>Encuentra el Sushimi más cercano a ti</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Localizaciones -->
+    <section class="locations-section">
+        <div class="container">
+            <div class="loading" id="loading">
+                <p>Cargando localizaciones...</p>
+            </div>
+            <div class="locations-grid" id="locationsGrid">
+                <!-- Las localizaciones se cargarán dinámicamente aquí -->
+            </div>
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <p>Error al cargar las localizaciones. Por favor, intenta de nuevo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sushimi</h3>
+                    <p>Experiencia japonesa auténtica desde 2025</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Domingo</p>
+                    <p>12:00 - 23:30</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@sushimi.com</p>
+                    <p>Tel: +34 912 345 678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sushimi. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/localizaciones.js"></script>
+</body>
+</html>

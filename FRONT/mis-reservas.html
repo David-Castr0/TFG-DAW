@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas - Sushimi</title>
+    <link rel="stylesheet" href="css/mis-reservas.css">
+</head>
+<body>
+    <!-- Header / Navegación -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1>SUSHIMI</h1>
+                <p class="tagline">Tradición Japonesa</p>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="menu.html">Menú</a>
+                <a href="localizaciones.html">Localizaciones</a>
+                <a href="reservas.html">Reservar</a>
+                <a href="login.html" class="btn-nav-login">Iniciar Sesión</a>
+                <a href="register.html" class="btn-nav-register">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h2>Mis Reservas</h2>
+                <p>Consulta y gestiona tus reservas</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Consulta de Reservas -->
+    <section class="reservations-section">
+        <div class="container">
+            <!-- Formulario de búsqueda -->
+            <div class="search-container">
+                <form id="searchForm" class="search-form">
+                    <h3 class="form-title">Consultar Reservas</h3>
+                    <div class="form-group">
+                        <label for="emailBusqueda">Introduce tu email</label>
+                        <input type="email" id="emailBusqueda" name="emailBusqueda" required placeholder="tu@email.com">
+                    </div>
+                    <button type="submit" class="search-btn">Buscar mis reservas</button>
+                </form>
+            </div>
+
+            <!-- Mensaje de carga -->
+            <div id="loading" class="loading" style="display: none;">
+                <p>Buscando reservas...</p>
+            </div>
+
+            <!-- Contenedor de resultados -->
+            <div id="resultsContainer" class="results-container" style="display: none;">
+                <h3 class="results-title">Próximas Reservas (<span id="reservasCount">0</span>)</h3>
+                <div id="reservasList" class="reservas-list">
+                    <!-- Las reservas se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+
+            <!-- Mensaje cuando no hay reservas -->
+            <div id="noReservas" class="no-reservas" style="display: none;">
+                <div class="no-reservas-icon">📅</div>
+                <h3>No tienes reservas futuras</h3>
+                <p>No se encontraron reservas para este email.</p>
+                <a href="reservas.html" class="btn-primary">Hacer una reserva</a>
+            </div>
+
+            <!-- Mensaje de error -->
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <p>Error al buscar reservas. Por favor, intenta de nuevo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sushimi</h3>
+                    <p>Experiencia japonesa auténtica desde 2025</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Domingo</p>
+                    <p>12:00 - 23:30</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@sushimi.com</p>
+                    <p>Tel: +34 912 345 678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sushimi. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/mis-reservas.js"></script>
+</body>
+</html>

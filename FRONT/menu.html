@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - Sushi Buffet</title>
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+    <!-- Header / Navegación -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1>SUSHIMI</h1>
+                <p class="tagline">Tradición Japonesa</p>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="localizaciones.html">Localizaciones</a>
+                <a href="reservas.html">Reservar</a>
+                <a href="mis-reservas.html">Mis reservas</a>
+                <a href="login.html" class="btn-nav-login">Iniciar Sesión</a>
+                <a href="register.html" class="btn-nav-register">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section del Menú -->
+    <section class="menu-hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h2>Nuestra Carta</h2>
+                <p>Descubre la exquisita variedad de platos japoneses</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros de Categorías -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="categories-filters" id="categoriesFilters">
+                <button class="category-btn active" data-category="all">Todos</button>
+                <!-- Las categorías se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Menú de Platos -->
+    <section class="menu-section">
+        <div class="container">
+            <div class="loading" id="loading">
+                <p>Cargando menú...</p>
+            </div>
+            <div class="menu-grid" id="menuGrid">
+                <!-- Los platos se cargarán dinámicamente aquí -->
+            </div>
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <p>Error al cargar el menú. Por favor, intenta de nuevo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sushi Buffet</h3>
+                    <p>Experiencia japonesa auténtica desde 2025</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Domingo</p>
+                    <p>12:00 - 23:30</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@sushibuffet.com</p>
+                    <p>Tel: +34 912 345 678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sushi Buffet. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas - Sushimi</title>
+    <link rel="stylesheet" href="css/reservas.css">
+</head>
+<body>
+    <!-- Header / Navegación -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <h1>SUSHIMI</h1>
+                <p class="tagline">Tradición Japonesa</p>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="menu.html">Menú</a>
+                <a href="localizaciones.html">Localizaciones</a>
+                <a href="mis-reservas.html">Mis reservas</a>
+                <a href="login.html" class="btn-nav-login">Iniciar Sesión</a>
+                <a href="register.html" class="btn-nav-register">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h2>Reserva tu Mesa</h2>
+                <p>Asegura tu experiencia gastronómica japonesa</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Formulario de Reserva -->
+    <section class="reservation-section">
+        <div class="container">
+            <div class="reservation-form-container">
+                <form id="reservationForm" class="reservation-form">
+                    <h3 class="form-title">Datos de la Reserva</h3>
+                    
+                    <!-- Información del cliente -->
+                    <div class="form-section">
+                        <h4 class="section-title">Información Personal</h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreCliente">Nombre *</label>
+                                <input type="text" id="nombreCliente" name="nombreCliente" placeholder="Juan" required>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="apellidosCliente">Apellidos *</label>
+                                <input type="text" id="apellidosCliente" name="apellidosCliente" placeholder="García López" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                            <label for="telefonoCliente">Teléfono *</label>
+                                <input type="tel" id="telefonoCliente" name="telefonoCliente" 
+                                    pattern="[0-9]{9}" 
+                                    title="Introduce un teléfono válido de 9 dígitos (ej: 612345678)"
+                                    placeholder="612345678"
+                                maxlength="9"
+                                required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emailCliente">Email *</label>
+                                <input type="email" id="emailCliente" name="emailCliente" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalles de la reserva -->
+                    <div class="form-section">
+                        <h4 class="section-title">Detalles de la Reserva</h4>
+                        
+                        <div class="form-group">
+                            <label for="localizacion">Restaurante *</label>
+                            <select id="localizacion" name="localizacion" required>
+                                <option value="">Selecciona un restaurante</option>
+                                <!-- Las localizaciones se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mesa">Mesa *</label>
+                            <select id="mesa" name="mesa" required disabled>
+                                <option value="">Primero selecciona un restaurante</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fechaReserva">Fecha *</label>
+                                <input type="date" id="fechaReserva" name="fechaReserva" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="horaReserva">Hora *</label>
+                                <input type="time" id="horaReserva" name="horaReserva" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="numPersonas">Número de Personas *</label>
+                            <input type="number" id="numPersonas" name="numPersonas" min="1" max="20" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notas">Notas Especiales (opcional)</label>
+                            <textarea id="notas" name="notas" rows="4" placeholder="Alergias, peticiones especiales, etc."></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Confirmar Reserva</button>
+                </form>
+                
+                <!-- Mensaje de confirmación (oculto por defecto) -->
+                <div id="confirmationMessage" class="confirmation-message" style="display: none;">
+                    <div class="confirmation-icon">✓</div>
+                    <h3>¡Reserva Confirmada!</h3>
+                    <p>Hemos recibido tu reserva correctamente.</p>
+                    <p class="confirmation-details" id="confirmationDetails"></p>
+                    <button class="btn-secondary" onclick="location.reload()">Hacer otra reserva</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sushimi</h3>
+                    <p>Experiencia japonesa auténtica desde 2025</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Domingo</p>
+                    <p>12:00 - 23:30</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@sushimi.com</p>
+                    <p>Tel: +34 912 345 678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sushimi. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/reservas.js"></script>
+</body>
+</html>
