@@ -658,3 +658,28 @@ body {
         padding: 0.5rem;
     }
 }
+
+/* ===== BOTÓN LOGOUT EN NAV ===== */
+.btn-logout-nav {
+    background-color: var(--rojo-japones);
+    color: var(--blanco);
+    padding: 0.5rem 1.2rem;
+    border: 2px solid var(--rojo-japones);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.btn-logout-nav:hover {
+    background-color: transparent;
+    transform: translateY(-2px);
+}
+
+.btn-logout-nav:active {
+    transform: translateY(0);
+}

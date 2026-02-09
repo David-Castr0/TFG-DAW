@@ -354,3 +354,20 @@ window.addEventListener('click', (e) => {
 document.addEventListener('DOMContentLoaded', init);
 
 console.log('Admin.js cargado correctamente');
+
+// ========================================
+// CERRAR SESIÓN
+// ========================================
+
+document.getElementById('btnLogout').addEventListener('click', () => {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        // Limpiar localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('rol');
+        
+        // Redirigir a login
+        window.location.href = 'login.html';
+    }
+});

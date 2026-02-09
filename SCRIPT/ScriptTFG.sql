@@ -1,5 +1,6 @@
+CREATE DATABASE IF NOT EXISTS sushi_tfg;
+USE sushi_tfg;
 
-use sushi_tfg;
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
