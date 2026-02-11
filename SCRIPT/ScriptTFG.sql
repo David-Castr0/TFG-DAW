@@ -6,9 +6,9 @@ CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    nombre VARCHAR(20) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    rol ENUM('admin', 'cocinero', 'recepcionista') NOT NULL,
+    rol ENUM('ADMIN', 'COCINERO', 'RECEPCIONISTA', 'CLIENTE') NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
