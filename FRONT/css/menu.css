@@ -42,9 +42,6 @@ body {
 .header {
     background-color: var(--gris-oscuro);
     padding: 1.5rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
     border-bottom: 2px solid var(--rojo-japones);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -58,12 +55,10 @@ body {
 .logo {
     text-decoration: none;
     color: inherit;
-    display: block;
 }
 
 .logo:hover {
     opacity: 0.8;
-    cursor: pointer;
 }
 
 .logo h1 {
@@ -74,7 +69,7 @@ body {
 }
 
 .logo .tagline {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--plata);
     letter-spacing: 2px;
     margin-top: 0.2rem;
@@ -83,21 +78,67 @@ body {
 .nav {
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 .nav a {
     color: var(--plata);
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     letter-spacing: 1px;
     transition: all 0.3s ease;
-    padding: 0.5rem 1rem;
-    border-bottom: 2px solid transparent;
+    text-transform: uppercase;
+    font-weight: 500;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav a.active {
     color: var(--blanco);
-    border-bottom: 2px solid var(--rojo-japones);
+}
+
+.btn-nav-login,
+.btn-nav-register {
+    background-color: transparent;
+    border: 2px solid var(--plata);
+    color: var(--plata);
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.btn-nav-login:hover {
+    background-color: var(--plata);
+    color: var(--negro);
+    border-color: var(--plata);
+}
+
+.btn-nav-register {
+    background-color: var(--rojo-japones);
+    border-color: var(--rojo-japones);
+    color: var(--blanco);
+}
+
+.btn-nav-register:hover {
+    background-color: transparent;
+    border-color: var(--rojo-japones);
+    color: var(--rojo-japones);
+}
+
+/* Responsive para nav */
+@media (max-width: 1024px) {
+    .nav {
+        gap: 1rem;
+    }
+    
+    .nav a {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none; /* Se podría añadir menú hamburguesa */
+    }
 }
 
 /* ===== MENU HERO ===== */

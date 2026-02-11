@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sushi Buffet - Experiencia Japonesa Auténtica</title>
+    <title>Sushimi - Restaurante Japonés Auténtico</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <!-- Header / Navegación -->
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo">
@@ -15,10 +15,11 @@
                 <p class="tagline">Tradición Japonesa</p>
             </a>
             <nav class="nav">
-                <a href="menu.html" >Menú</a>
+                <a href="index.html" class="active">Inicio</a>
+                <a href="menu.html">Menú</a>
                 <a href="localizaciones.html">Localizaciones</a>
                 <a href="reservas.html">Reservar</a>
-                <a href="mis-reservas.html">Mis reservas</a>
+                <a href="mis-reservas.html">Mis Reservas</a>
                 <a href="login.html" class="btn-nav-login">Iniciar Sesión</a>
                 <a href="register.html" class="btn-nav-register">Registrarse</a>
             </nav>
@@ -27,50 +28,150 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <h2>Bienvenido a la Auténtica Experiencia Japonesa</h2>
-                <p>Descubre el arte del sushi en un ambiente elegante y tradicional</p>
-                <a href="reservas.html" class="btn-primary">Reservar Mesa</a>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Experiencia Japonesa Auténtica</h1>
+            <p class="hero-subtitle">Descubre el verdadero sabor de Japón en cada bocado</p>
+            <div class="hero-buttons">
+                <a href="menu.html" class="btn-primary">Ver Menú</a>
+                <a href="reservas.html" class="btn-secondary">Reservar Mesa</a>
             </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Descubre más</span>
+            <div class="arrow-down"></div>
         </div>
     </section>
 
-    <!-- Sección de Características -->
-    <section class="features">
+    <!-- Sobre Nosotros -->
+    <section class="about">
         <div class="container">
-            <h2 class="section-title">¿Por Qué Elegirnos?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🍱</div>
-                    <h3>Buffet Libre</h3>
-                    <p>Disfruta de variedad ilimitada de sushi fresco y platos tradicionales japoneses</p>
+            <div class="section-header">
+                <span class="section-subtitle">Nuestra Historia</span>
+                <h2 class="section-title">Tradición y Calidad desde 2025</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="lead">En Sushimi, combinamos la auténtica tradición culinaria japonesa con ingredientes frescos de la más alta calidad.</p>
+                    <p>Nuestros chefs, formados en las mejores escuelas de Tokio, preparan cada plato con dedicación y respeto por las técnicas milenarias. Desde el sushi más delicado hasta los robustos ramen, cada bocado es una experiencia única.</p>
+                    <p>Con 9 localizaciones en toda España, llevamos la esencia de Japón a tu ciudad, manteniendo siempre los más altos estándares de frescura, sabor y presentación.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number">9</span>
+                            <span class="stat-label">Restaurantes</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Platos Únicos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Ingredientes Frescos</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👨‍🍳</div>
-                    <h3>Chefs Expertos</h3>
-                    <p>Nuestros maestros sushiman preparan cada pieza con dedicación y precisión</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🥢</div>
-                    <h3>Ingredientes Premium</h3>
-                    <p>Utilizamos solo los ingredientes más frescos y de la más alta calidad</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏮</div>
-                    <h3>Ambiente Único</h3>
-                    <p>Sumérgete en una atmósfera japonesa auténtica y elegante</p>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&h=800&fit=crop" alt="Chef preparando sushi">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de Llamada a la Acción -->
+    <!-- Especialidades -->
+    <section class="specialties">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Lo Mejor de Nuestra Carta</span>
+                <h2 class="section-title">Especialidades de la Casa</h2>
+            </div>
+            <div id="specialtiesGrid" class="specialties-grid">
+                <!-- Se llenará dinámicamente con JavaScript -->
+                <div class="loading">Cargando especialidades...</div>
+            </div>
+            <div class="section-footer">
+                <a href="menu.html" class="btn-primary">Ver Menú Completo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería -->
+    <section class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Nuestro Ambiente</span>
+                <h2 class="section-title">Galería</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=400&fit=crop" alt="Sushi variado">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1564489563601-c53cfc451e93?w=400&h=400&fit=crop" alt="Nigiri de atún">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=400&h=400&fit=crop" alt="Ramen humeante">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400&h=400&fit=crop" alt="Interior del restaurante">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=400&fit=crop" alt="Preparación de sushi">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1582716401301-b2407dc7563d?w=400&h=400&fit=crop" alt="Mochi tradicional">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Por Qué Elegirnos -->
+<section class="why-us">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">Nuestros Valores</span>
+            <h2 class="section-title">¿Por Qué Elegirnos?</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&h=200&fit=crop" alt="Pescado fresco">
+                </div>
+                <h3>Frescura Garantizada</h3>
+                <p>Ingredientes seleccionados diariamente. Pescado fresco del mercado cada mañana.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop" alt="Chef experto">
+                </div>
+                <h3>Chefs Expertos</h3>
+                <p>Maestros formados en Japón con más de 15 años de experiencia en alta cocina.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&h=200&fit=crop" alt="Ambiente auténtico">
+                </div>
+                <h3>Ambiente Auténtico</h3>
+                <p>Decoración tradicional japonesa que te transportará directamente a Tokio.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop" alt="Servicio excelente">
+                </div>
+                <h3>Servicio Excelente</h3>
+                <p>Atención personalizada y profesional. Tu satisfacción es nuestra prioridad.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Call to Action -->
     <section class="cta">
         <div class="container">
-            <h2>Vive la Experiencia Sushi Buffet</h2>
-            <p>Reserva tu mesa y descubre por qué somos el mejor buffet de sushi</p>
-            <a href="reservas.html" class="btn-secondary">Hacer una Reserva</a>
+            <div class="cta-content">
+                <h2>¿Listo para una Experiencia Única?</h2>
+                <p>Reserva tu mesa ahora y descubre por qué somos el restaurante japonés favorito</p>
+                <a href="reservas.html" class="btn-cta">Reservar Ahora</a>
+            </div>
         </div>
     </section>
 
@@ -79,22 +180,36 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Sushi Buffet</h3>
+                    <h3>Sushimi</h3>
                     <p>Experiencia japonesa auténtica desde 2025</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="menu.html">Menú</a></li>
+                        <li><a href="localizaciones.html">Localizaciones</a></li>
+                        <li><a href="reservas.html">Reservar</a></li>
+                        <li><a href="mis-reservas.html">Mis Reservas</a></li>
+                    </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Horarios</h3>
                     <p>Lunes a Domingo</p>
-                    <p>12:00 - 23:30</p>
+                    <p><strong>12:00 - 23:30</strong></p>
                 </div>
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>Email: info@sushibuffet.com</p>
+                    <p>Email: info@sushimi.com</p>
                     <p>Tel: +34 912 345 678</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Sushi Buffet. Todos los derechos reservados.</p>
+                <p>&copy; 2025 Sushimi. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
