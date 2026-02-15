@@ -2,9 +2,12 @@ package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "usuarios")
 @Data
 public class User {

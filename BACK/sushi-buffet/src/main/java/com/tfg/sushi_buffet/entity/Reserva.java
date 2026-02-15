@@ -1,10 +1,15 @@
 package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "reservas")
 public class Reserva {
@@ -55,109 +60,5 @@ public class Reserva {
         pendiente, confirmada, cancelada, completada
     }
     
-    // Constructor vacío
-    public Reserva() {
-    }
     
-    // Getters y Setters
-    public Integer getIdReserva() {
-        return idReserva;
-    }
-    
-    public void setIdReserva(Integer idReserva) {
-        this.idReserva = idReserva;
-    }
-    
-    public Mesa getMesa() {
-        return mesa;
-    }
-    
-    public void setMesa(Mesa mesa) {
-        this.mesa = mesa;
-    }
-    
-    public Localizacion getLocalizacion() {
-        return localizacion;
-    }
-    
-    public void setLocalizacion(Localizacion localizacion) {
-        this.localizacion = localizacion;
-    }
-    
-    public String getNombreCliente() {
-        return nombreCliente;
-    }
-    
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
-    }
-    
-    public String getTelefonoCliente() {
-        return telefonoCliente;
-    }
-    
-    public void setTelefonoCliente(String telefonoCliente) {
-        this.telefonoCliente = telefonoCliente;
-    }
-    
-    public String getEmailCliente() {
-        return emailCliente;
-    }
-    
-    public void setEmailCliente(String emailCliente) {
-        this.emailCliente = emailCliente;
-    }
-    
-    public LocalDate getFechaReserva() {
-        return fechaReserva;
-    }
-    
-    public void setFechaReserva(LocalDate fechaReserva) {
-        this.fechaReserva = fechaReserva;
-    }
-    
-    public LocalTime getHoraReserva() {
-        return horaReserva;
-    }
-    
-    public void setHoraReserva(LocalTime horaReserva) {
-        this.horaReserva = horaReserva;
-    }
-    
-    public Integer getNumPersonas() {
-        return numPersonas;
-    }
-    
-    public void setNumPersonas(Integer numPersonas) {
-        this.numPersonas = numPersonas;
-    }
-    
-    public Estado getEstado() {
-        return estado;
-    }
-    
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
-    
-    public String getNotas() {
-        return notas;
-    }
-    
-    public void setNotas(String notas) {
-        this.notas = notas;
-    }
-    
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-    
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-    
-    @PrePersist
-    protected void onCreate() {
-        fechaCreacion = LocalDateTime.now();
-    }
 }

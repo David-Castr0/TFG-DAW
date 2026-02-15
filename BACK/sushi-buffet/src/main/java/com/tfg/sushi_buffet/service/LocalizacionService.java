@@ -14,22 +14,19 @@ public class LocalizacionService {
     @Autowired
     private LocalizacionRepository localizacionRepository;
     
-    // Obtener todas las localizaciones
+
     public List<Localizacion> obtenerTodasLasLocalizaciones() {
         return localizacionRepository.findAll();
     }
     
-    // Obtener solo localizaciones activas
     public List<Localizacion> obtenerLocalizacionesActivas() {
         return localizacionRepository.findByActivoTrue();
     }
     
-    // Obtener localización por ID
     public Optional<Localizacion> obtenerLocalizacionPorId(Integer id) {
         return localizacionRepository.findById(id);
     }
     
-    // Obtener localizaciones por ciudad
     public List<Localizacion> obtenerLocalizacionesPorCiudad(String ciudad) {
         return localizacionRepository.findByCiudad(ciudad);
     }
@@ -39,7 +36,6 @@ public class LocalizacionService {
         return localizacionRepository.save(localizacion);
     }
     
-    // Eliminar localización
     public void eliminarLocalizacion(Integer id) {
         localizacionRepository.deleteById(id);
     }

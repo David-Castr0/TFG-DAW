@@ -14,17 +14,14 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     
-    // Obtener todos los usuarios
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioRepository.findAll();
     }
     
-    // Obtener usuario por ID
     public Optional<Usuario> obtenerUsuarioPorId(Integer id) {
         return usuarioRepository.findById(id);
     }
     
-    // Obtener usuario por username
     public Optional<Usuario> obtenerUsuarioPorUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
@@ -34,7 +31,6 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
     
-    // Eliminar usuario
     public void eliminarUsuario(Integer id) {
         usuarioRepository.deleteById(id);
     }

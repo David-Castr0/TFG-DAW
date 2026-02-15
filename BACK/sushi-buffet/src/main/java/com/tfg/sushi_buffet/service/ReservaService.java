@@ -16,17 +16,14 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
     
-    // Obtener todas las reservas
     public List<Reserva> obtenerTodasLasReservas() {
         return reservaRepository.findAll();
     }
     
-    // Obtener reserva por ID
     public Optional<Reserva> obtenerReservaPorId(Integer id) {
         return reservaRepository.findById(id);
     }
     
-    // Obtener reservas por fecha
     public List<Reserva> obtenerReservasPorFecha(LocalDate fecha) {
         return reservaRepository.findByFechaReserva(fecha);
     }
@@ -62,7 +59,6 @@ public class ReservaService {
         return null;
     }
     
-    // Eliminar reserva
     public void eliminarReserva(Integer id) {
         reservaRepository.deleteById(id);
     }

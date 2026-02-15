@@ -1,8 +1,12 @@
 package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "mesas")
 public class Mesa {
     
@@ -30,48 +34,4 @@ public class Mesa {
         libre, ocupada, reservada
     }
     
-    // Constructor vacío
-    public Mesa() {
-    }
-    
-    // Getters y Setters
-    public Integer getIdMesa() {
-        return idMesa;
-    }
-    
-    public void setIdMesa(Integer idMesa) {
-        this.idMesa = idMesa;
-    }
-    
-    public Localizacion getLocalizacion() {
-        return localizacion;
-    }
-    
-    public void setLocalizacion(Localizacion localizacion) {
-        this.localizacion = localizacion;
-    }
-    
-    public String getNumeroMesa() {
-        return numeroMesa;
-    }
-    
-    public void setNumeroMesa(String numeroMesa) {
-        this.numeroMesa = numeroMesa;
-    }
-    
-    public Integer getCapacidad() {
-        return capacidad;
-    }
-    
-    public void setCapacidad(Integer capacidad) {
-        this.capacidad = capacidad;
-    }
-    
-    public Estado getEstado() {
-        return estado;
-    }
-    
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
 }

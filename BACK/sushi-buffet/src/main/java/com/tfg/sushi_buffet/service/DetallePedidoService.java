@@ -21,17 +21,14 @@ public class DetallePedidoService {
         return detallePedidoRepository.findAll();
     }
     
-    // Obtener detalle por ID
     public Optional<DetallePedido> obtenerDetallePorId(Integer id) {
         return detallePedidoRepository.findById(id);
     }
     
-    // Obtener todos los platos de un pedido
     public List<DetallePedido> obtenerPlatosDePedido(Integer idPedido) {
         return detallePedidoRepository.findByPedidoIdPedido(idPedido);
     }
     
-    // Obtener detalles por estado
     public List<DetallePedido> obtenerDetallesPorEstado(Estado estado) {
         return detallePedidoRepository.findByEstado(estado);
     }
@@ -41,7 +38,6 @@ public class DetallePedidoService {
         return detallePedidoRepository.findByEstado(Estado.pendiente);
     }
     
-    // Obtener platos en preparación
     public List<DetallePedido> obtenerPlatosEnPreparacion() {
         return detallePedidoRepository.findByEstado(Estado.en_preparacion);
     }
@@ -73,7 +69,7 @@ public class DetallePedidoService {
         return null;
     }
     
-    // Eliminar detalle
+
     public void eliminarDetalle(Integer id) {
         detallePedidoRepository.deleteById(id);
     }

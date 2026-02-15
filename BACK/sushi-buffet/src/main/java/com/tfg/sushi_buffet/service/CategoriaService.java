@@ -14,7 +14,7 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
     
-    // Obtener todas las categorías
+
     public List<Categoria> obtenerTodasLasCategorias() {
         return categoriaRepository.findAll();
     }
@@ -24,7 +24,7 @@ public class CategoriaService {
         return categoriaRepository.findAllByOrderByOrdenVisualizacionAsc();
     }
     
-    // Obtener categoría por ID
+
     public Optional<Categoria> obtenerCategoriaPorId(Integer id) {
         return categoriaRepository.findById(id);
     }
@@ -34,7 +34,7 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
     
-    // Eliminar categoría
+
     public void eliminarCategoria(Integer id) {
         categoriaRepository.deleteById(id);
     }
