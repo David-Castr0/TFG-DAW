@@ -1,8 +1,13 @@
 package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "platos")
 public class Plato {
@@ -31,64 +36,5 @@ public class Plato {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean disponible = true;
     
-    // Constructor vacío
-    public Plato() {
-    }
-    
-    // Getters y Setters
-    public Integer getIdPlato() {
-        return idPlato;
-    }
-    
-    public void setIdPlato(Integer idPlato) {
-        this.idPlato = idPlato;
-    }
-    
-    public Categoria getCategoria() {
-        return categoria;
-    }
-    
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public String getDescripcion() {
-        return descripcion;
-    }
-    
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    
-    public BigDecimal getPrecio() {
-        return precio;
-    }
-    
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
-    }
-    
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-    
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
-    }
-    
-    public Boolean getDisponible() {
-        return disponible;
-    }
-    
-    public void setDisponible(Boolean disponible) {
-        this.disponible = disponible;
-    }
+   
 }

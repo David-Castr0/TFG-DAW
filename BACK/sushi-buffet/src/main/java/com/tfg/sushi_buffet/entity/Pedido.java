@@ -1,8 +1,13 @@
 package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
@@ -31,53 +36,5 @@ public class Pedido {
         activo, finalizado
     }
     
-    // Constructor vacío
-    public Pedido() {
-    }
     
-    // Getters y Setters
-    public Integer getIdPedido() {
-        return idPedido;
-    }
-    
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
-    
-    public Mesa getMesa() {
-        return mesa;
-    }
-    
-    public void setMesa(Mesa mesa) {
-        this.mesa = mesa;
-    }
-    
-    public LocalDateTime getFechaHoraInicio() {
-        return fechaHoraInicio;
-    }
-    
-    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
-        this.fechaHoraInicio = fechaHoraInicio;
-    }
-    
-    public LocalDateTime getFechaHoraFin() {
-        return fechaHoraFin;
-    }
-    
-    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
-        this.fechaHoraFin = fechaHoraFin;
-    }
-    
-    public Estado getEstado() {
-        return estado;
-    }
-    
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
-    
-    @PrePersist
-    protected void onCreate() {
-        fechaHoraInicio = LocalDateTime.now();
-    }
 }

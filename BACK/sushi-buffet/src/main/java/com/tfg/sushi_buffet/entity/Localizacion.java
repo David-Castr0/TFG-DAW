@@ -1,9 +1,14 @@
 package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalTime;
 
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "localizaciones")
 public class Localizacion {
     
@@ -33,72 +38,4 @@ public class Localizacion {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean activo = true;
     
-    // Constructor vacío
-    public Localizacion() {
-    }
-    
-    // Getters y Setters
-    public Integer getIdLocalizacion() {
-        return idLocalizacion;
-    }
-    
-    public void setIdLocalizacion(Integer idLocalizacion) {
-        this.idLocalizacion = idLocalizacion;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public String getDireccion() {
-        return direccion;
-    }
-    
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-    
-    public String getTelefono() {
-        return telefono;
-    }
-    
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-    
-    public String getCiudad() {
-        return ciudad;
-    }
-    
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-    
-    public LocalTime getHorarioApertura() {
-        return horarioApertura;
-    }
-    
-    public void setHorarioApertura(LocalTime horarioApertura) {
-        this.horarioApertura = horarioApertura;
-    }
-    
-    public LocalTime getHorarioCierre() {
-        return horarioCierre;
-    }
-    
-    public void setHorarioCierre(LocalTime horarioCierre) {
-        this.horarioCierre = horarioCierre;
-    }
-    
-    public Boolean getActivo() {
-        return activo;
-    }
-    
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
 }

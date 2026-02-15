@@ -15,22 +15,19 @@ public class MesaService {
     @Autowired
     private MesaRepository mesaRepository;
     
-    // Obtener todas las mesas
+
     public List<Mesa> obtenerTodasLasMesas() {
         return mesaRepository.findAll();
     }
     
-    // Obtener mesa por ID
     public Optional<Mesa> obtenerMesaPorId(Integer id) {
         return mesaRepository.findById(id);
     }
-    
-    // Obtener mesas por localización
+
     public List<Mesa> obtenerMesasPorLocalizacion(Integer idLocalizacion) {
         return mesaRepository.findByLocalizacionIdLocalizacion(idLocalizacion);
     }
-    
-    // Obtener mesas por estado
+
     public List<Mesa> obtenerMesasPorEstado(Estado estado) {
         return mesaRepository.findByEstado(estado);
     }
@@ -66,7 +63,7 @@ public class MesaService {
         return null;
     }
     
-    // Eliminar mesa
+
     public void eliminarMesa(Integer id) {
         mesaRepository.deleteById(id);
     }

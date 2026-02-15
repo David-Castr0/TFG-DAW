@@ -16,22 +16,18 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
     
-    // Obtener todos los pedidos
     public List<Pedido> obtenerTodosLosPedidos() {
         return pedidoRepository.findAll();
     }
     
-    // Obtener pedido por ID
     public Optional<Pedido> obtenerPedidoPorId(Integer id) {
         return pedidoRepository.findById(id);
     }
     
-    // Obtener pedidos por estado
     public List<Pedido> obtenerPedidosPorEstado(Estado estado) {
         return pedidoRepository.findByEstado(estado);
     }
     
-    // Obtener pedidos activos
     public List<Pedido> obtenerPedidosActivos() {
         return pedidoRepository.findByEstado(Estado.activo);
     }
@@ -63,7 +59,6 @@ public class PedidoService {
         return null;
     }
     
-    // Eliminar pedido
     public void eliminarPedido(Integer id) {
         pedidoRepository.deleteById(id);
     }

@@ -14,22 +14,18 @@ public class PlatoService {
     @Autowired
     private PlatoRepository platoRepository;
     
-    // Obtener todos los platos
     public List<Plato> obtenerTodosLosPlatos() {
         return platoRepository.findAll();
     }
     
-    // Obtener solo platos disponibles
     public List<Plato> obtenerPlatosDisponibles() {
         return platoRepository.findByDisponibleTrue();
     }
     
-    // Obtener plato por ID
     public Optional<Plato> obtenerPlatoPorId(Integer id) {
         return platoRepository.findById(id);
     }
     
-    // Obtener platos por categoría
     public List<Plato> obtenerPlatosPorCategoria(Integer idCategoria) {
         return platoRepository.findByCategoriaIdCategoria(idCategoria);
     }
@@ -44,7 +40,6 @@ public class PlatoService {
         return platoRepository.save(plato);
     }
     
-    // Eliminar plato
     public void eliminarPlato(Integer id) {
         platoRepository.deleteById(id);
     }

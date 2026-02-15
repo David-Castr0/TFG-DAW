@@ -1,7 +1,11 @@
 package com.tfg.sushi_buffet.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "categorias")
 public class Categoria {
@@ -20,40 +24,5 @@ public class Categoria {
     @Column(name = "orden_visualizacion")
     private Integer ordenVisualizacion = 0;
     
-    // Constructor vacío
-    public Categoria() {
-    }
     
-    // Getters y Setters
-    public Integer getIdCategoria() {
-        return idCategoria;
-    }
-    
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public String getDescripcion() {
-        return descripcion;
-    }
-    
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    
-    public Integer getOrdenVisualizacion() {
-        return ordenVisualizacion;
-    }
-    
-    public void setOrdenVisualizacion(Integer ordenVisualizacion) {
-        this.ordenVisualizacion = ordenVisualizacion;
-    }
 }
