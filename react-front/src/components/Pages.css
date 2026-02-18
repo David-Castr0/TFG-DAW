@@ -1,0 +1,29 @@
+/* ===== PÁGINAS SIMPLES ===== */
+.menu,
+.localizaciones,
+.reservas,
+.mis-reservas,
+.admin {
+  min-height: 80vh;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.menu h1,
+.localizaciones h1,
+.reservas h1,
+.mis-reservas h1,
+.admin h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--blanco);
+}
+
+.menu p,
+.localizaciones p,
+.reservas p,
+.mis-reservas p,
+.admin p {
+  color: var(--plata);
+  font-size: 1.2rem;
+}
