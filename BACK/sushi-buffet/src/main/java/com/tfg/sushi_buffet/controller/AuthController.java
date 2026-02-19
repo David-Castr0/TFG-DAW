@@ -55,6 +55,7 @@ public class AuthController {
                 user.getUsername(),
                 user.getNombre(),
                 user.getRol().name(),
+                user.getEmail(),
                 "Login exitoso"
             ));
             
@@ -100,6 +101,7 @@ public class AuthController {
                 usuarioGuardado.getUsername(),
                 usuarioGuardado.getNombre(),
                 usuarioGuardado.getRol().name(),
+                usuarioGuardado.getEmail(),
                 "Registro exitoso"
             ));
             

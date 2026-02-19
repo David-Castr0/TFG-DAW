@@ -17,6 +17,7 @@ class AuthService {
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('nombre', response.data.nombre);
         localStorage.setItem('rol', response.data.rol);
+        localStorage.setItem('email', response.data.email);
       }
       
       return response.data;
@@ -50,6 +51,7 @@ class AuthService {
     localStorage.removeItem('username');
     localStorage.removeItem('nombre');
     localStorage.removeItem('rol');
+    localStorage.removeItem('email')
   }
 
   // Obtener usuario actual
@@ -58,7 +60,8 @@ class AuthService {
       token: localStorage.getItem('token'),
       username: localStorage.getItem('username'),
       nombre: localStorage.getItem('nombre'),
-      rol: localStorage.getItem('rol')
+      rol: localStorage.getItem('rol'),
+      email: localStorage.getItem('email')
     };
   }
 

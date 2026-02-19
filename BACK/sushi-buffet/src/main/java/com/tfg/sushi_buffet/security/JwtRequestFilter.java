@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
 import java.io.IOException;
 
 @Component
@@ -31,6 +30,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+        
+        String requestURI = request.getRequestURI();
+        
+        // Saltar validación de JWT para endpoints públicos
+        if (requestURI.startsWith("/api/auth/") || 
+            requestURI.startsWith("/api/platos/") ||
+            requestURI.startsWith("/api/categorias/") ||
+            requestURI.startsWith("/api/localizaciones/") ||
+            requestURI.startsWith("/api/mesas/") ||
+            requestURI.startsWith("/api/reservas/")) {
+            
+            chain.doFilter(request, response);
+            return; // Salir sin validar token
+        }
         
         final String authorizationHeader = request.getHeader("Authorization");
         
