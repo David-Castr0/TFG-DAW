@@ -1,0 +1,243 @@
+/* ===== MENU PAGE ===== */
+.menu-page {
+    min-height: 100vh;
+    background-color: var(--negro);
+}
+
+/* Menu Header */
+.menu-header {
+    background: linear-gradient(135deg, var(--gris-oscuro) 0%, var(--negro) 100%);
+    padding: 4rem 0 3rem;
+    border-bottom: 2px solid var(--rojo-japones);
+}
+
+.menu-title {
+    font-size: 3rem;
+    color: var(--blanco);
+    text-align: center;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+}
+
+.menu-subtitle {
+    text-align: center;
+    color: var(--plata);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+/* Filtros de Categorías */
+.menu-filters {
+    background-color: var(--gris-oscuro);
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.categories-filter {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background-color: transparent;
+    border: 2px solid var(--gris-medio);
+    color: var(--plata);
+    padding: 0.7rem 1.5rem;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+}
+
+.filter-btn:hover {
+    border-color: var(--rojo-japones);
+    color: var(--blanco);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background-color: var(--rojo-japones);
+    border-color: var(--rojo-japones);
+    color: var(--blanco);
+}
+
+/* Menu Content */
+.menu-content {
+    padding: 4rem 0;
+}
+
+.platos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.plato-card {
+    background-color: var(--gris-oscuro);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--gris-medio);
+}
+
+.plato-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(184, 0, 31, 0.3);
+    border-color: var(--rojo-japones);
+}
+
+.plato-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+
+.plato-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.plato-card:hover .plato-image img {
+    transform: scale(1.1);
+}
+
+.plato-categoria-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(184, 0, 31, 0.9);
+    color: var(--blanco);
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.plato-info {
+    padding: 1.5rem;
+}
+
+.plato-nombre {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    color: var(--blanco);
+}
+
+.plato-descripcion {
+    color: var(--plata);
+    margin-bottom: 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    min-height: 3em;
+}
+
+.plato-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gris-medio);
+}
+
+.plato-precio {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--rojo-japones);
+}
+
+.btn-add-cart {
+    background-color: var(--rojo-japones);
+    color: var(--blanco);
+    border: 2px solid var(--rojo-japones);
+    padding: 0.6rem 1.5rem;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+}
+
+.btn-add-cart:hover {
+    background-color: transparent;
+    color: var(--rojo-japones);
+    transform: translateY(-2px);
+}
+
+/* Loading y Error States */
+.loading-container,
+.error-container,
+.no-platos {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.loading-text {
+    font-size: 1.5rem;
+    color: var(--plata);
+}
+
+.error-text {
+    font-size: 1.2rem;
+    color: var(--rojo-japones);
+}
+
+.no-platos p {
+    font-size: 1.2rem;
+    color: var(--plata);
+}
+
+/* Responsive - Menu */
+@media (max-width: 768px) {
+    .menu-title {
+        font-size: 2rem;
+    }
+    
+    .menu-subtitle {
+        font-size: 1rem;
+    }
+    
+    .categories-filter {
+        gap: 0.5rem;
+    }
+    
+    .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .platos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-header {
+        padding: 2rem 0;
+    }
+    
+    .plato-nombre {
+        font-size: 1.2rem;
+    }
+    
+    .plato-precio {
+        font-size: 1.5rem;
+    }
+}

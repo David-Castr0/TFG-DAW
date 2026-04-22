@@ -4,7 +4,7 @@ import authService from '../services/authService';
 import './Auth.css';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,9 +16,8 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await authService.login(username, password);
+      const response = await authService.login(email, password);
       
-      // Redirigir según el rol
       if (response.rol === 'ADMIN') {
         navigate('/admin');
       } else {
@@ -46,14 +45,14 @@ function Login() {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="username">Usuario</label>
+              <label htmlFor="email">Correo electrónico</label>
               <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="Introduce tu usuario"
+                placeholder="Introduce tu correo"
               />
             </div>
 

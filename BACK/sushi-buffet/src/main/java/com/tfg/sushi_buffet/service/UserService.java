@@ -1,7 +1,7 @@
 package com.tfg.sushi_buffet.service;
 
-import com.tfg.sushi_buffet.entity.User;
-import com.tfg.sushi_buffet.repository.UserRepository;
+import com.tfg.sushi_buffet.entity.Usuario;
+import com.tfg.sushi_buffet.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,56 +19,62 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     
     @Autowired
-    private UserRepository userRepository;
+    private UsuarioRepository usuarioRepository;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
-    // Método requerido por Spring Security para cargar usuarios
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        Usuario user = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
         
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
                 user.getActivo(),
-                true,
-                true,
-                true,
+                true, true, true,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRol().name()))
         );
     }
-    
-    // Registrar nuevo usuario
-    public User registrarUsuario(User user) {
-        // Encriptar la contraseña
+
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+        Usuario user = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getActivo(),
+                true, true, true,
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRol().name()))
+        );
+    }
+
+    public Usuario registrarUsuario(Usuario user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setFechaCreacion(LocalDateTime.now());
         user.setActivo(true);
-        return userRepository.save(user);
+        return usuarioRepository.save(user);
     }
     
-    public List<User> obtenerTodosLosUsuarios() {
-        return userRepository.findAll();
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuarioRepository.findAll();
     }
     
-    public Optional<User> obtenerUsuarioPorUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<Usuario> obtenerUsuarioPorUsername(String username) {
+        return usuarioRepository.findByUsername(username);
     }
 
-    public Optional<User> obtenerUsuarioPorEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<Usuario> obtenerUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email);
     }
     
-    // Verificar si existe username
     public Boolean existeUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return usuarioRepository.existsByUsername(username);
     }
     
-    // Verificar si existe email
     public Boolean existeEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return usuarioRepository.existsByEmail(email);
     }
 }

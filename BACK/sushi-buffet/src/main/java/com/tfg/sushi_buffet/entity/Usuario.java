@@ -27,6 +27,9 @@ public class Usuario {
     
     @Column(nullable = false, unique = true, length = 100)
     private String email;
+
+    @Column(length = 20)
+    private String telefono;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,12 +41,10 @@ public class Usuario {
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion;
     
-    // Enum para los roles
     public enum Rol {
-        admin, cocinero, recepcionista
+        ADMIN, CLIENTE, COCINERO, RECEPCIONISTA
     }
     
-    // Método para establecer automáticamente la fecha de creación
     @PrePersist
     protected void onCreate() {
         fechaCreacion = LocalDateTime.now();

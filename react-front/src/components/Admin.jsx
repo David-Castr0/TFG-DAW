@@ -2,41 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReservasService from '../services/reservasService';
 import localizacionesService from '../services/localizacionesService';
+import platosService from '../services/platosService';
 import authService from '../services/authService';
 import './Admin.css';
 
 function Admin() {
   const navigate = useNavigate();
   const reservasService = new ReservasService();
-  
-  // Estados
+
+  const [pestanaActiva, setPestanaActiva] = useState('reservas');
+
+  // Estados reservas
   const [todasLasReservas, setTodasLasReservas] = useState([]);
   const [reservasFiltradas, setReservasFiltradas] = useState([]);
   const [localizaciones, setLocalizaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
-  // Estados de filtros
-  const [filtros, setFiltros] = useState({
-    fecha: '',
-    localizacion: '',
-    estado: ''
-  });
-  
-  // Estados de estadísticas
-  const [stats, setStats] = useState({
-    hoy: 0,
-    semana: 0,
-    pendientes: 0,
-    confirmadas: 0
-  });
-  
-  // Estados del modal
+  const [filtros, setFiltros] = useState({ fecha: '', localizacion: '', estado: '' });
+  const [stats, setStats] = useState({ hoy: 0, semana: 0, pendientes: 0, confirmadas: 0 });
   const [showModal, setShowModal] = useState(false);
   const [reservaSeleccionada, setReservaSeleccionada] = useState(null);
   const [nuevoEstado, setNuevoEstado] = useState('');
 
-  // Verificar autenticación al cargar
+  // Estados platos y localizaciones
+  const [todosLosPlatos, setTodosLosPlatos] = useState([]);
+  const [todasLasLocalizaciones, setTodasLasLocalizaciones] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+
+  // Estados pedidos domicilio
+  const [pedidosDomicilio, setPedidosDomicilio] = useState([]);
+  const [pedidoDetalle, setPedidoDetalle] = useState(null);
+  const [showModalPedido, setShowModalPedido] = useState(false);
+
+  // Modal crear plato
+  const [showModalPlato, setShowModalPlato] = useState(false);
+  const [nuevoPlato, setNuevoPlato] = useState({
+    nombre: '', descripcion: '', precio: '', imagenUrl: '', categoria: { idCategoria: '' }
+  });
+
+  // Modal crear localizacion
+  const [showModalLocalizacion, setShowModalLocalizacion] = useState(false);
+  const [nuevaLocalizacion, setNuevaLocalizacion] = useState({
+    nombre: '', direccion: '', telefono: '', ciudad: '', horarioApertura: '', horarioCierre: ''
+  });
+
   useEffect(() => {
     const user = authService.getCurrentUser();
     if (!user.token || user.rol !== 'ADMIN') {
@@ -44,69 +53,95 @@ function Admin() {
       navigate('/login');
       return;
     }
-    
     cargarDatos();
   }, [navigate]);
 
   const cargarDatos = async () => {
     setLoading(true);
     setError('');
-    
     try {
-      const [reservasData, localizacionesData] = await Promise.all([
+      const token = localStorage.getItem('token');
+      const [reservasData, localizacionesData, platosData, todasLocData, categoriasData, pedidosData] = await Promise.all([
         fetch('http://localhost:8080/api/reservas').then(res => res.json()),
-        localizacionesService.obtenerLocalizacionesActivas()
+        localizacionesService.obtenerLocalizacionesActivas(),
+        platosService.obtenerTodosLosPlatos(),
+        localizacionesService.obtenerTodasLasLocalizaciones(),
+        platosService.obtenerCategorias(),
+        fetch('http://localhost:8080/api/pedidos', { headers: { 'Authorization': `Bearer ${token}` } }).then(res => res.json())
       ]);
-      
-      // Ordenar por fecha y hora (más recientes primero)
+
       const reservasOrdenadas = reservasData.sort((a, b) => {
         const fechaA = new Date(a.fechaReserva + 'T' + a.horaReserva);
         const fechaB = new Date(b.fechaReserva + 'T' + b.horaReserva);
         return fechaB - fechaA;
       });
-      
+
+      const pedidosDomicilioFiltrados = pedidosData
+        .filter(p => p.tipoPedido === 'domicilio')
+        .sort((a, b) => new Date(b.fechaHoraInicio) - new Date(a.fechaHoraInicio));
+
       setTodasLasReservas(reservasOrdenadas);
       setReservasFiltradas(reservasOrdenadas);
       setLocalizaciones(localizacionesData);
+      setTodosLosPlatos(platosData);
+      setTodasLasLocalizaciones(todasLocData);
+      setCategorias(categoriasData);
+      setPedidosDomicilio(pedidosDomicilioFiltrados);
       calcularEstadisticas(reservasOrdenadas);
     } catch (err) {
       console.error('Error:', err);
-      setError('Error al cargar los datos. Por favor, intenta de nuevo.');
+      setError('Error al cargar los datos.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const verDetallePedido = async (pedido) => {
+    try {
+      const token = localStorage.getItem('token');
+      const detalles = await fetch(`http://localhost:8080/api/detalle-pedidos/pedido/${pedido.idPedido}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).then(res => res.json());
+      setPedidoDetalle({ ...pedido, detalles });
+      setShowModalPedido(true);
+    } catch (err) {
+      alert('Error al cargar el detalle del pedido.');
+    }
+  };
+
+  const cambiarEstadoPedido = async (idPedido, nuevoEstado) => {
+    try {
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:8080/api/pedidos/${idPedido}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ estado: nuevoEstado, idPedido })
+      });
+      setPedidosDomicilio(prev =>
+        prev.map(p => p.idPedido === idPedido ? { ...p, estado: nuevoEstado } : p)
+      );
+      if (pedidoDetalle?.idPedido === idPedido) {
+        setPedidoDetalle(prev => ({ ...prev, estado: nuevoEstado }));
+      }
+    } catch (err) {
+      alert('Error al cambiar el estado del pedido.');
     }
   };
 
   const calcularEstadisticas = (reservas) => {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-    
     const inicioSemana = new Date(hoy);
     inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-    
     const finSemana = new Date(inicioSemana);
     finSemana.setDate(inicioSemana.getDate() + 6);
     finSemana.setHours(23, 59, 59, 999);
-    
-    const reservasHoy = reservas.filter(r => {
-      const fechaReserva = new Date(r.fechaReserva);
-      fechaReserva.setHours(0, 0, 0, 0);
-      return fechaReserva.getTime() === hoy.getTime();
-    });
-    
-    const reservasSemana = reservas.filter(r => {
-      const fechaReserva = new Date(r.fechaReserva);
-      return fechaReserva >= inicioSemana && fechaReserva <= finSemana;
-    });
-    
-    const pendientes = reservas.filter(r => r.estado === 'pendiente');
-    const confirmadas = reservas.filter(r => r.estado === 'confirmada');
-    
+
     setStats({
-      hoy: reservasHoy.length,
-      semana: reservasSemana.length,
-      pendientes: pendientes.length,
-      confirmadas: confirmadas.length
+      hoy: reservas.filter(r => { const f = new Date(r.fechaReserva); f.setHours(0,0,0,0); return f.getTime() === hoy.getTime(); }).length,
+      semana: reservas.filter(r => { const f = new Date(r.fechaReserva); return f >= inicioSemana && f <= finSemana; }).length,
+      pendientes: reservas.filter(r => r.estado === 'pendiente').length,
+      confirmadas: reservas.filter(r => r.estado === 'confirmada').length
     });
   };
 
@@ -117,19 +152,9 @@ function Admin() {
 
   const aplicarFiltros = () => {
     let filtradas = [...todasLasReservas];
-    
-    if (filtros.fecha) {
-      filtradas = filtradas.filter(r => r.fechaReserva === filtros.fecha);
-    }
-    
-    if (filtros.localizacion) {
-      filtradas = filtradas.filter(r => r.localizacion.idLocalizacion === parseInt(filtros.localizacion));
-    }
-    
-    if (filtros.estado) {
-      filtradas = filtradas.filter(r => r.estado === filtros.estado);
-    }
-    
+    if (filtros.fecha) filtradas = filtradas.filter(r => r.fechaReserva === filtros.fecha);
+    if (filtros.localizacion) filtradas = filtradas.filter(r => r.localizacion.idLocalizacion === parseInt(filtros.localizacion));
+    if (filtros.estado) filtradas = filtradas.filter(r => r.estado === filtros.estado);
     setReservasFiltradas(filtradas);
   };
 
@@ -152,227 +177,460 @@ function Admin() {
 
   const guardarEstado = async () => {
     if (!reservaSeleccionada) return;
-    
     try {
-      await reservasService.cancelarReserva(reservaSeleccionada.idReserva); // Reutilizamos este método
-      
-      // Si no es cancelar, necesitamos otro endpoint
       await fetch(`http://localhost:8080/api/reservas/${reservaSeleccionada.idReserva}/estado`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nuevoEstado)
       });
-      
       alert('Estado cambiado correctamente');
       cerrarModal();
       cargarDatos();
     } catch (err) {
-      console.error('Error:', err);
-      alert('Error al cambiar el estado. Por favor, inténtalo de nuevo.');
+      alert('Error al cambiar el estado.');
     }
   };
 
-  const formatearFecha = (fecha) => {
-    return new Date(fecha).toLocaleDateString('es-ES');
+  const toggleDisponibilidadPlato = async (plato) => {
+    try {
+      await platosService.cambiarDisponibilidad(plato.idPlato, !plato.disponible);
+      setTodosLosPlatos(prev =>
+        prev.map(p => p.idPlato === plato.idPlato ? { ...p, disponible: !p.disponible } : p)
+      );
+    } catch (err) {
+      alert('Error al cambiar la disponibilidad del plato.');
+    }
   };
 
-  const formatearHora = (hora) => {
-    return hora.substring(0, 5);
+  const toggleActivoLocalizacion = async (loc) => {
+    try {
+      await localizacionesService.cambiarActivo(loc.idLocalizacion, !loc.activo);
+      setTodasLasLocalizaciones(prev =>
+        prev.map(l => l.idLocalizacion === loc.idLocalizacion ? { ...l, activo: !l.activo } : l)
+      );
+    } catch (err) {
+      alert('Error al cambiar el estado de la localización.');
+    }
   };
 
-  const getClaseEstado = (estado) => {
-    return `estado-${estado}`;
+  const handleNuevoPlatoChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'categoria') {
+      setNuevoPlato(prev => ({ ...prev, categoria: { idCategoria: parseInt(value) } }));
+    } else {
+      setNuevoPlato(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const getTextoEstado = (estado) => {
-    return estado.charAt(0).toUpperCase() + estado.slice(1);
+  const crearPlato = async () => {
+    if (!nuevoPlato.nombre || !nuevoPlato.precio || !nuevoPlato.categoria.idCategoria) {
+      alert('Por favor rellena al menos el nombre, precio y categoría.');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const platoAEnviar = { ...nuevoPlato, precio: parseFloat(nuevoPlato.precio), disponible: true };
+      const response = await fetch('http://localhost:8080/api/platos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(platoAEnviar)
+      });
+      if (response.ok) {
+        alert('Plato creado correctamente.');
+        setShowModalPlato(false);
+        setNuevoPlato({ nombre: '', descripcion: '', precio: '', imagenUrl: '', categoria: { idCategoria: '' } });
+        cargarDatos();
+      } else {
+        alert('Error al crear el plato.');
+      }
+    } catch (err) {
+      alert('Error al crear el plato.');
+    }
   };
+
+  const eliminarPlato = async (idPlato) => {
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este plato? Esta acción no se puede deshacer.')) return;
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/platos/${idPlato}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        setTodosLosPlatos(prev => prev.filter(p => p.idPlato !== idPlato));
+      } else {
+        alert('Error al eliminar el plato.');
+      }
+    } catch (err) {
+      alert('Error al eliminar el plato.');
+    }
+  };
+
+  const handleNuevaLocalizacionChange = (e) => {
+    const { name, value } = e.target;
+    setNuevaLocalizacion(prev => ({ ...prev, [name]: value }));
+  };
+
+  const crearLocalizacion = async () => {
+    if (!nuevaLocalizacion.nombre || !nuevaLocalizacion.direccion || !nuevaLocalizacion.ciudad) {
+      alert('Por favor rellena al menos el nombre, dirección y ciudad.');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const locAEnviar = { ...nuevaLocalizacion, activo: true };
+      const response = await fetch('http://localhost:8080/api/localizaciones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(locAEnviar)
+      });
+      if (response.ok) {
+        alert('Localización creada correctamente.');
+        setShowModalLocalizacion(false);
+        setNuevaLocalizacion({ nombre: '', direccion: '', telefono: '', ciudad: '', horarioApertura: '', horarioCierre: '' });
+        cargarDatos();
+      } else {
+        alert('Error al crear la localización.');
+      }
+    } catch (err) {
+      alert('Error al crear la localización.');
+    }
+  };
+
+  const eliminarLocalizacion = async (idLocalizacion) => {
+    if (!window.confirm('¿Estás seguro de que quieres eliminar esta localización?')) return;
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/localizaciones/${idLocalizacion}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        setTodasLasLocalizaciones(prev => prev.filter(l => l.idLocalizacion !== idLocalizacion));
+      } else {
+        alert('Error al eliminar la localización.');
+      }
+    } catch (err) {
+      alert('Error al eliminar la localización.');
+    }
+  };
+
+  const formatearFecha = (fecha) => new Date(fecha).toLocaleDateString('es-ES');
+  const formatearHora = (hora) => hora.substring(0, 5);
+  const formatearFechaHora = (fechaHora) => {
+    if (!fechaHora) return '-';
+    const d = new Date(fechaHora);
+    return `${d.toLocaleDateString('es-ES')} ${d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`;
+  };
+  const getClaseEstado = (estado) => `estado-${estado}`;
+  const getTextoEstado = (estado) => estado.charAt(0).toUpperCase() + estado.slice(1);
 
   if (loading) {
     return (
       <div className="admin-page">
-        <div className="loading">
-          <p>Cargando panel de administración...</p>
-        </div>
+        <div className="loading"><p>Cargando panel de administración...</p></div>
       </div>
     );
   }
 
   return (
     <div className="admin-page">
-      {/* Hero */}
       <section className="hero-admin">
         <div className="hero-content">
           <h2>Panel de Administrador</h2>
-          <p>Gestión de reservas del sistema</p>
+          <p>Gestión del sistema</p>
         </div>
       </section>
 
-      {/* Estadísticas */}
-      <section className="stats-section">
-        <div className="container">
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-info">
-                <h3>Reservas Hoy</h3>
-                <p className="stat-number">{stats.hoy}</p>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-info">
-                <h3>Esta Semana</h3>
-                <p className="stat-number">{stats.semana}</p>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-info">
-                <h3>Pendientes</h3>
-                <p className="stat-number">{stats.pendientes}</p>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-info">
-                <h3>Confirmadas</h3>
-                <p className="stat-number">{stats.confirmadas}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Filtros */}
-      <section className="filters-section">
-        <div className="container">
-          <div className="filters-container">
-            <h3>Filtrar Reservas</h3>
-            <div className="filters-grid">
-              <div className="filter-group">
-                <label htmlFor="fecha">Fecha</label>
-                <input
-                  type="date"
-                  id="fecha"
-                  name="fecha"
-                  value={filtros.fecha}
-                  onChange={handleFiltroChange}
-                />
-              </div>
-              <div className="filter-group">
-                <label htmlFor="localizacion">Localización</label>
-                <select
-                  id="localizacion"
-                  name="localizacion"
-                  value={filtros.localizacion}
-                  onChange={handleFiltroChange}
-                >
-                  <option value="">Todas</option>
-                  {localizaciones.map(loc => (
-                    <option key={loc.idLocalizacion} value={loc.idLocalizacion}>
-                      {loc.nombre} - {loc.ciudad}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="filter-group">
-                <label htmlFor="estado">Estado</label>
-                <select
-                  id="estado"
-                  name="estado"
-                  value={filtros.estado}
-                  onChange={handleFiltroChange}
-                >
-                  <option value="">Todos</option>
-                  <option value="pendiente">Pendiente</option>
-                  <option value="confirmada">Confirmada</option>
-                  <option value="cancelada">Cancelada</option>
-                  <option value="completada">Completada</option>
-                </select>
-              </div>
-              <div className="filter-group">
-                <button onClick={aplicarFiltros} className="btn-filter">
-                  Aplicar Filtros
-                </button>
-                <button onClick={limpiarFiltros} className="btn-clear">
-                  Limpiar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tabla de Reservas */}
-      <section className="reservations-section">
-        <div className="container">
-          {error && (
-            <div className="error-message">
-              <p>{error}</p>
-            </div>
+      {/* Pestañas */}
+      <div className="admin-tabs">
+        <button className={`admin-tab ${pestanaActiva === 'reservas' ? 'active' : ''}`} onClick={() => setPestanaActiva('reservas')}>Reservas</button>
+        <button className={`admin-tab ${pestanaActiva === 'pedidos' ? 'active' : ''}`} onClick={() => setPestanaActiva('pedidos')}>
+          Pedidos a Domicilio
+          {pedidosDomicilio.filter(p => p.estado === 'activo').length > 0 && (
+            <span className="tab-badge">{pedidosDomicilio.filter(p => p.estado === 'activo').length}</span>
           )}
+        </button>
+        <button className={`admin-tab ${pestanaActiva === 'platos' ? 'active' : ''}`} onClick={() => setPestanaActiva('platos')}>Platos</button>
+        <button className={`admin-tab ${pestanaActiva === 'localizaciones' ? 'active' : ''}`} onClick={() => setPestanaActiva('localizaciones')}>Localizaciones</button>
+      </div>
 
-          {reservasFiltradas.length > 0 ? (
-            <div className="reservas-container">
-              <div className="reservas-header">
-                <h3>Todas las Reservas ({reservasFiltradas.length})</h3>
-                <button onClick={cargarDatos} className="btn-refresh">
-                   Actualizar
-                </button>
+      {/* ===== PESTAÑA RESERVAS ===== */}
+      {pestanaActiva === 'reservas' && (
+        <>
+          <section className="stats-section">
+            <div className="container">
+              <div className="stats-grid">
+                <div className="stat-card"><div className="stat-info"><h3>Reservas Hoy</h3><p className="stat-number">{stats.hoy}</p></div></div>
+                <div className="stat-card"><div className="stat-info"><h3>Esta Semana</h3><p className="stat-number">{stats.semana}</p></div></div>
+                <div className="stat-card"><div className="stat-info"><h3>Pendientes</h3><p className="stat-number">{stats.pendientes}</p></div></div>
+                <div className="stat-card"><div className="stat-info"><h3>Confirmadas</h3><p className="stat-number">{stats.confirmadas}</p></div></div>
               </div>
+            </div>
+          </section>
+
+          <section className="filters-section">
+            <div className="container">
+              <div className="filters-container">
+                <h3>Filtrar Reservas</h3>
+                <div className="filters-grid">
+                  <div className="filter-group">
+                    <label htmlFor="fecha">Fecha</label>
+                    <input type="date" id="fecha" name="fecha" value={filtros.fecha} onChange={handleFiltroChange} />
+                  </div>
+                  <div className="filter-group">
+                    <label htmlFor="localizacion">Localización</label>
+                    <select id="localizacion" name="localizacion" value={filtros.localizacion} onChange={handleFiltroChange}>
+                      <option value="">Todas</option>
+                      {localizaciones.map(loc => (
+                        <option key={loc.idLocalizacion} value={loc.idLocalizacion}>{loc.nombre} - {loc.ciudad}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="filter-group">
+                    <label htmlFor="estado">Estado</label>
+                    <select id="estado" name="estado" value={filtros.estado} onChange={handleFiltroChange}>
+                      <option value="">Todos</option>
+                      <option value="pendiente">Pendiente</option>
+                      <option value="confirmada">Confirmada</option>
+                      <option value="cancelada">Cancelada</option>
+                      <option value="completada">Completada</option>
+                    </select>
+                  </div>
+                  <div className="filter-group">
+                    <button onClick={aplicarFiltros} className="btn-filter">Aplicar Filtros</button>
+                    <button onClick={limpiarFiltros} className="btn-clear">Limpiar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="reservations-section">
+            <div className="container">
+              {error && <div className="error-message"><p>{error}</p></div>}
+              {reservasFiltradas.length > 0 ? (
+                <div className="reservas-container">
+                  <div className="reservas-header">
+                    <h3>Todas las Reservas ({reservasFiltradas.length})</h3>
+                    <button onClick={cargarDatos} className="btn-refresh">Actualizar</button>
+                  </div>
+                  <div className="table-container">
+                    <table className="reservas-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th><th>Fecha</th><th>Hora</th><th>Cliente</th>
+                          <th>Teléfono</th><th>Localización</th><th>Mesa</th>
+                          <th>Personas</th><th>Estado</th><th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {reservasFiltradas.map(reserva => (
+                          <tr key={reserva.idReserva}>
+                            <td>{reserva.idReserva}</td>
+                            <td>{formatearFecha(reserva.fechaReserva)}</td>
+                            <td>{formatearHora(reserva.horaReserva)}</td>
+                            <td>{reserva.nombreCliente}</td>
+                            <td>{reserva.telefonoCliente}</td>
+                            <td>{reserva.localizacion.nombre}</td>
+                            <td>{reserva.mesa.numeroMesa}</td>
+                            <td>{reserva.numPersonas}</td>
+                            <td>
+                              <span className={`estado-badge ${getClaseEstado(reserva.estado)}`}>
+                                {getTextoEstado(reserva.estado)}
+                              </span>
+                            </td>
+                            <td>
+                              <button onClick={() => abrirModal(reserva)} className="btn-cambiar-estado">
+                                Cambiar Estado
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <div className="no-reservas">
+                  <h3>No hay reservas</h3>
+                  <p>No se encontraron reservas con los filtros aplicados.</p>
+                </div>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* ===== PESTAÑA PEDIDOS DOMICILIO ===== */}
+      {pestanaActiva === 'pedidos' && (
+        <section className="gestion-section">
+          <div className="container">
+            <div className="gestion-header">
+              <h3>Pedidos a Domicilio ({pedidosDomicilio.length})</h3>
+              <button onClick={cargarDatos} className="btn-refresh">Actualizar</button>
+            </div>
+            {pedidosDomicilio.length === 0 ? (
+              <div className="no-reservas"><h3>No hay pedidos a domicilio</h3></div>
+            ) : (
               <div className="table-container">
                 <table className="reservas-table">
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Fecha</th>
-                      <th>Hora</th>
+                      <th>Fecha y hora</th>
                       <th>Cliente</th>
                       <th>Teléfono</th>
-                      <th>Localización</th>
-                      <th>Mesa</th>
-                      <th>Personas</th>
+                      <th>Dirección</th>
+                      <th>Pago</th>
                       <th>Estado</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {reservasFiltradas.map(reserva => (
-                      <tr key={reserva.idReserva}>
-                        <td>{reserva.idReserva}</td>
-                        <td>{formatearFecha(reserva.fechaReserva)}</td>
-                        <td>{formatearHora(reserva.horaReserva)}</td>
-                        <td>{reserva.nombreCliente}</td>
-                        <td>{reserva.telefonoCliente}</td>
-                        <td>{reserva.localizacion.nombre}</td>
-                        <td>{reserva.mesa.numeroMesa}</td>
-                        <td>{reserva.numPersonas}</td>
+                    {pedidosDomicilio.map(pedido => (
+                      <tr key={pedido.idPedido}>
+                        <td>#{pedido.idPedido}</td>
+                        <td>{formatearFechaHora(pedido.fechaHoraInicio)}</td>
+                        <td>{pedido.nombreCliente}</td>
+                        <td>{pedido.telefonoCliente}</td>
+                        <td>{pedido.direccionEntrega}</td>
                         <td>
-                          <span className={`estado-badge ${getClaseEstado(reserva.estado)}`}>
-                            {getTextoEstado(reserva.estado)}
+                          <span className="metodo-pago-badge">
+                            {pedido.metodoPago === 'efectivo' ? ' Efectivo' : '💳 Tarjeta'}
                           </span>
                         </td>
                         <td>
-                          <button
-                            onClick={() => abrirModal(reserva)}
-                            className="btn-cambiar-estado"
-                          >
-                            Cambiar Estado
+                          <span className={`estado-badge ${pedido.estado === 'activo' ? 'estado-pendiente' : 'estado-completada'}`}>
+                            {pedido.estado === 'activo' ? 'En curso' : 'Finalizado'}
+                          </span>
+                        </td>
+                        <td className="acciones-cell">
+                          <button className="btn-cambiar-estado" onClick={() => verDetallePedido(pedido)}>
+                            Ver detalle
                           </button>
+                          {pedido.estado === 'activo' && (
+                            <button className="btn-toggle btn-toggle-activar" onClick={() => cambiarEstadoPedido(pedido.idPedido, 'finalizado')}>
+                              Finalizar
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </div>
-          ) : (
-            <div className="no-reservas">
-              <h3>No hay reservas</h3>
-              <p>No se encontraron reservas con los filtros aplicados.</p>
-            </div>
-          )}
-        </div>
-      </section>
+            )}
+          </div>
+        </section>
+      )}
 
-      {/* Modal */}
+      {/* ===== PESTAÑA PLATOS ===== */}
+      {pestanaActiva === 'platos' && (
+        <section className="gestion-section">
+          <div className="container">
+            <div className="gestion-header">
+              <h3>Gestión de Platos ({todosLosPlatos.length})</h3>
+              <div className="gestion-header-acciones">
+                <button onClick={cargarDatos} className="btn-refresh">Actualizar</button>
+                <button onClick={() => setShowModalPlato(true)} className="btn-crear">+ Nuevo Plato</button>
+              </div>
+            </div>
+            <div className="table-container">
+              <table className="reservas-table">
+                <thead>
+                  <tr>
+                    <th>ID</th><th>Imagen</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Estado</th><th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {todosLosPlatos.map(plato => (
+                    <tr key={plato.idPlato}>
+                      <td>{plato.idPlato}</td>
+                      <td>
+                        <img
+                          src={plato.imagenUrl || 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=60'}
+                          alt={plato.nombre}
+                          className="tabla-imagen"
+                          onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=60'}
+                        />
+                      </td>
+                      <td>{plato.nombre}</td>
+                      <td>{plato.categoria?.nombre || '-'}</td>
+                      <td>{plato.precio?.toFixed(2)}€</td>
+                      <td>
+                        <span className={`estado-badge ${plato.disponible ? 'estado-confirmada' : 'estado-cancelada'}`}>
+                          {plato.disponible ? 'Activo' : 'Inactivo'}
+                        </span>
+                      </td>
+                      <td className="acciones-cell">
+                        <button
+                          className={`btn-toggle ${plato.disponible ? 'btn-toggle-desactivar' : 'btn-toggle-activar'}`}
+                          onClick={() => toggleDisponibilidadPlato(plato)}
+                        >
+                          {plato.disponible ? 'Desactivar' : 'Activar'}
+                        </button>
+                        <button className="btn-eliminar" onClick={() => eliminarPlato(plato.idPlato)}>Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== PESTAÑA LOCALIZACIONES ===== */}
+      {pestanaActiva === 'localizaciones' && (
+        <section className="gestion-section">
+          <div className="container">
+            <div className="gestion-header">
+              <h3>Gestión de Localizaciones ({todasLasLocalizaciones.length})</h3>
+              <div className="gestion-header-acciones">
+                <button onClick={cargarDatos} className="btn-refresh">Actualizar</button>
+                <button onClick={() => setShowModalLocalizacion(true)} className="btn-crear">+ Nueva Localización</button>
+              </div>
+            </div>
+            <div className="table-container">
+              <table className="reservas-table">
+                <thead>
+                  <tr>
+                    <th>ID</th><th>Nombre</th><th>Ciudad</th><th>Dirección</th><th>Teléfono</th><th>Estado</th><th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {todasLasLocalizaciones.map(loc => (
+                    <tr key={loc.idLocalizacion}>
+                      <td>{loc.idLocalizacion}</td>
+                      <td>{loc.nombre}</td>
+                      <td>{loc.ciudad}</td>
+                      <td>{loc.direccion}</td>
+                      <td>{loc.telefono}</td>
+                      <td>
+                        <span className={`estado-badge ${loc.activo ? 'estado-confirmada' : 'estado-cancelada'}`}>
+                          {loc.activo ? 'Activa' : 'Inactiva'}
+                        </span>
+                      </td>
+                      <td className="acciones-cell">
+                        <button
+                          className={`btn-toggle ${loc.activo ? 'btn-toggle-desactivar' : 'btn-toggle-activar'}`}
+                          onClick={() => toggleActivoLocalizacion(loc)}
+                        >
+                          {loc.activo ? 'Desactivar' : 'Activar'}
+                        </button>
+                        <button className="btn-eliminar" onClick={() => eliminarLocalizacion(loc.idLocalizacion)}>Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== MODAL CAMBIAR ESTADO RESERVA ===== */}
       {showModal && reservaSeleccionada && (
         <div className="modal" onClick={(e) => e.target.className === 'modal' && cerrarModal()}>
           <div className="modal-content">
@@ -390,11 +648,7 @@ function Admin() {
               </p>
               <div className="form-group">
                 <label htmlFor="nuevoEstado">Nuevo Estado:</label>
-                <select
-                  id="nuevoEstado"
-                  value={nuevoEstado}
-                  onChange={(e) => setNuevoEstado(e.target.value)}
-                >
+                <select id="nuevoEstado" value={nuevoEstado} onChange={(e) => setNuevoEstado(e.target.value)}>
                   <option value="pendiente">Pendiente</option>
                   <option value="confirmada">Confirmada</option>
                   <option value="cancelada">Cancelada</option>
@@ -402,12 +656,143 @@ function Admin() {
                 </select>
               </div>
               <div className="modal-actions">
-                <button onClick={guardarEstado} className="btn-primary">
-                  Guardar
-                </button>
-                <button onClick={cerrarModal} className="btn-secondary">
-                  Cancelar
-                </button>
+                <button onClick={guardarEstado} className="btn-primary">Guardar</button>
+                <button onClick={cerrarModal} className="btn-secondary">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== MODAL DETALLE PEDIDO ===== */}
+      {showModalPedido && pedidoDetalle && (
+        <div className="modal" onClick={(e) => e.target.className === 'modal' && setShowModalPedido(false)}>
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModalPedido(false)}>&times;</span>
+            <h3>Pedido #{pedidoDetalle.idPedido}</h3>
+            <div className="modal-body">
+              <div className="pedido-detalle-info">
+                <p><strong>Cliente:</strong> {pedidoDetalle.nombreCliente}</p>
+                <p><strong>Teléfono:</strong> {pedidoDetalle.telefonoCliente}</p>
+                <p><strong>Dirección:</strong> {pedidoDetalle.direccionEntrega}</p>
+                {pedidoDetalle.notasPedido && <p><strong>Notas:</strong> {pedidoDetalle.notasPedido}</p>}
+                <p><strong>Pago:</strong> {pedidoDetalle.metodoPago === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}</p>
+                <p><strong>Fecha:</strong> {formatearFechaHora(pedidoDetalle.fechaHoraInicio)}</p>
+                <p><strong>Estado:</strong>
+                  <span className={`estado-badge ${pedidoDetalle.estado === 'activo' ? 'estado-pendiente' : 'estado-completada'}`} style={{ marginLeft: '0.5rem' }}>
+                    {pedidoDetalle.estado === 'activo' ? 'En curso' : 'Finalizado'}
+                  </span>
+                </p>
+              </div>
+
+              <h4 style={{ color: 'var(--blanco)', margin: '1.5rem 0 0.8rem', letterSpacing: '1px' }}>Platos pedidos</h4>
+              <div className="pedido-detalle-platos">
+                {pedidoDetalle.detalles?.map(detalle => (
+                  <div key={detalle.idDetalle} className="pedido-detalle-item">
+                    <span className="pedido-detalle-nombre">{detalle.plato.nombre}</span>
+                    <span className="pedido-detalle-cantidad">x{detalle.cantidad}</span>
+                    <span className="pedido-detalle-precio">{(detalle.plato.precio * detalle.cantidad).toFixed(2)}€</span>
+                  </div>
+                ))}
+                <div className="pedido-detalle-total">
+                  <span>Total</span>
+                  <span>
+                    {pedidoDetalle.detalles?.reduce((acc, d) => acc + d.plato.precio * d.cantidad, 0).toFixed(2)}€
+                  </span>
+                </div>
+              </div>
+
+              <div className="modal-actions">
+                {pedidoDetalle.estado === 'activo' && (
+                  <button className="btn-primary" onClick={() => { cambiarEstadoPedido(pedidoDetalle.idPedido, 'finalizado'); setShowModalPedido(false); }}>
+                    Marcar como finalizado
+                  </button>
+                )}
+                <button className="btn-secondary" onClick={() => setShowModalPedido(false)}>Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== MODAL CREAR PLATO ===== */}
+      {showModalPlato && (
+        <div className="modal" onClick={(e) => e.target.className === 'modal' && setShowModalPlato(false)}>
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModalPlato(false)}>&times;</span>
+            <h3>Nuevo Plato</h3>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Nombre *</label>
+                <input type="text" name="nombre" value={nuevoPlato.nombre} onChange={handleNuevoPlatoChange} placeholder="Nombre del plato" />
+              </div>
+              <div className="form-group">
+                <label>Descripción</label>
+                <textarea name="descripcion" value={nuevoPlato.descripcion} onChange={handleNuevoPlatoChange} placeholder="Descripción del plato" rows="3" />
+              </div>
+              <div className="form-group">
+                <label>Precio (€) *</label>
+                <input type="number" name="precio" value={nuevoPlato.precio} onChange={handleNuevoPlatoChange} placeholder="0.00" step="0.01" min="0" />
+              </div>
+              <div className="form-group">
+                <label>Categoría *</label>
+                <select name="categoria" value={nuevoPlato.categoria.idCategoria} onChange={handleNuevoPlatoChange}>
+                  <option value="">Selecciona una categoría</option>
+                  {categorias.map(cat => (
+                    <option key={cat.idCategoria} value={cat.idCategoria}>{cat.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>URL de la imagen</label>
+                <input type="text" name="imagenUrl" value={nuevoPlato.imagenUrl} onChange={handleNuevoPlatoChange} placeholder="https://..." />
+                {nuevoPlato.imagenUrl && (
+                  <img src={nuevoPlato.imagenUrl} alt="Preview" className="imagen-preview" onError={(e) => e.target.style.display = 'none'} />
+                )}
+              </div>
+              <div className="modal-actions">
+                <button onClick={crearPlato} className="btn-primary">Crear Plato</button>
+                <button onClick={() => setShowModalPlato(false)} className="btn-secondary">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== MODAL CREAR LOCALIZACION ===== */}
+      {showModalLocalizacion && (
+        <div className="modal" onClick={(e) => e.target.className === 'modal' && setShowModalLocalizacion(false)}>
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModalLocalizacion(false)}>&times;</span>
+            <h3>Nueva Localización</h3>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Nombre *</label>
+                <input type="text" name="nombre" value={nuevaLocalizacion.nombre} onChange={handleNuevaLocalizacionChange} placeholder="Nombre del restaurante" />
+              </div>
+              <div className="form-group">
+                <label>Ciudad *</label>
+                <input type="text" name="ciudad" value={nuevaLocalizacion.ciudad} onChange={handleNuevaLocalizacionChange} placeholder="Ciudad" />
+              </div>
+              <div className="form-group">
+                <label>Dirección *</label>
+                <input type="text" name="direccion" value={nuevaLocalizacion.direccion} onChange={handleNuevaLocalizacionChange} placeholder="Calle y número" />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono" value={nuevaLocalizacion.telefono} onChange={handleNuevaLocalizacionChange} placeholder="600 000 000" />
+              </div>
+              <div className="form-group">
+                <label>Horario apertura</label>
+                <input type="time" name="horarioApertura" value={nuevaLocalizacion.horarioApertura} onChange={handleNuevaLocalizacionChange} />
+              </div>
+              <div className="form-group">
+                <label>Horario cierre</label>
+                <input type="time" name="horarioCierre" value={nuevaLocalizacion.horarioCierre} onChange={handleNuevaLocalizacionChange} />
+              </div>
+              <div className="modal-actions">
+                <button onClick={crearLocalizacion} className="btn-primary">Crear Localización</button>
+                <button onClick={() => setShowModalLocalizacion(false)} className="btn-secondary">Cancelar</button>
               </div>
             </div>
           </div>

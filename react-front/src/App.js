@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -10,22 +10,28 @@ import MisReservas from './components/MisReservas';
 import Login from './components/Login';
 import Register from './components/Register';
 import Admin from './components/Admin';
+import Checkout from './components/Checkout';
+import MisPedidos from './components/MisPedidos';
 import './App.css';
 
 function App() {
+  const [carrito, setCarrito] = useState([]);
+
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        <Navbar carrito={carrito} setCarrito={setCarrito} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
+          <Route path="/menu" element={<Menu carrito={carrito} setCarrito={setCarrito} />} />
           <Route path="/localizaciones" element={<Localizaciones />} />
           <Route path="/reservas" element={<Reservas />} />
           <Route path="/mis-reservas" element={<MisReservas />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/checkout" element={<Checkout carrito={carrito} setCarrito={setCarrito} />} />
+          <Route path="/mis-pedidos" element={<MisPedidos />} />
         </Routes>
         <Footer />
       </div>

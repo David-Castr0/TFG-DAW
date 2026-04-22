@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080/api';
 
 class LocalizacionesService {
-  // Obtener todas las localizaciones activas
   async obtenerLocalizacionesActivas() {
     try {
       const response = await axios.get(`${API_URL}/localizaciones/activas`);
@@ -13,7 +12,6 @@ class LocalizacionesService {
     }
   }
 
-  // Obtener todas las localizaciones
   async obtenerTodasLasLocalizaciones() {
     try {
       const response = await axios.get(`${API_URL}/localizaciones`);
@@ -23,10 +21,23 @@ class LocalizacionesService {
     }
   }
 
-  // Obtener localización por ID
   async obtenerLocalizacionPorId(id) {
     try {
       const response = await axios.get(`${API_URL}/localizaciones/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async cambiarActivo(idLocalizacion, activo) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(
+        `${API_URL}/localizaciones/${idLocalizacion}/activo`,
+        activo,
+        { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } }
+      );
       return response.data;
     } catch (error) {
       throw error;

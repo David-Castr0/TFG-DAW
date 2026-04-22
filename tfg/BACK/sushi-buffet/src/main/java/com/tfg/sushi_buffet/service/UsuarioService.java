@@ -1,0 +1,47 @@
+package com.tfg.sushi_buffet.service;
+
+import com.tfg.sushi_buffet.entity.Usuario;
+import com.tfg.sushi_buffet.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UsuarioService {
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuarioRepository.findAll();
+    }
+    
+    public Optional<Usuario> obtenerUsuarioPorId(Integer id) {
+        return usuarioRepository.findById(id);
+    }
+    
+    public Optional<Usuario> obtenerUsuarioPorUsername(String username) {
+        return usuarioRepository.findByUsername(username);
+    }
+    
+    // Crear o actualizar usuario
+    public Usuario guardarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+    
+    public void eliminarUsuario(Integer id) {
+        usuarioRepository.deleteById(id);
+    }
+    
+    // Verificar si existe un usuario por username
+    public boolean existeUsername(String username) {
+        return usuarioRepository.findByUsername(username).isPresent();
+    }
+    
+    // Verificar si existe un usuario por email
+    public boolean existeEmail(String email) {
+        return usuarioRepository.findByEmail(email).isPresent();
+    }
+}

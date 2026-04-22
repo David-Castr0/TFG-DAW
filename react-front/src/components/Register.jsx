@@ -10,6 +10,7 @@ function Register() {
     confirmPassword: '',
     nombre: '',
     email: '',
+    telefono: '',
     rol: 'CLIENTE'
   });
   const [error, setError] = useState('');
@@ -17,30 +18,22 @@ function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Validar que las contraseñas coincidan
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
 
     setLoading(true);
-
     try {
-      // Enviar datos sin confirmPassword
       const { confirmPassword, ...userData } = formData;
       await authService.register(userData);
-      
-      // Redirigir al home después del registro
       navigate('/');
     } catch (err) {
       setError(err);
@@ -56,83 +49,40 @@ function Register() {
           <h1>Registrarse</h1>
           <p className="subtitle">Crea tu cuenta en Sushimi</p>
 
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
+          {error && <div className="error-message">{error}</div>}
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="username">Usuario</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                placeholder="Elige un nombre de usuario"
-              />
+              <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required placeholder="Elige un nombre de usuario" />
             </div>
 
             <div className="form-group">
               <label htmlFor="nombre">Nombre completo</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                required
-                placeholder="Tu nombre completo"
-              />
+              <input type="text" id="nombre" name="nombre" value={formData.nombre} onChange={handleChange} required placeholder="Tu nombre completo" />
             </div>
 
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="tu@email.com"
-              />
+              <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="tu@email.com" />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="telefono">Teléfono *</label>
+              <input type="tel" id="telefono" name="telefono" value={formData.telefono} onChange={handleChange} required placeholder="600 000 000" />
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                placeholder="Crea una contraseña segura"
-              />
+              <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required placeholder="Crea una contraseña segura" />
             </div>
 
             <div className="form-group">
               <label htmlFor="confirmPassword">Confirmar contraseña</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                placeholder="Repite tu contraseña"
-              />
+              <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required placeholder="Repite tu contraseña" />
             </div>
 
-            <button 
-              type="submit" 
-              className="btn-submit"
-              disabled={loading}
-            >
+            <button type="submit" className="btn-submit" disabled={loading}>
               {loading ? 'Registrando...' : 'Registrarse'}
             </button>
           </form>

@@ -1,0 +1,176 @@
+/* ===== LOGIN PAGE ===== */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--negro) 0%, var(--gris-oscuro) 100%);
+  padding: 2rem 0;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 0 1rem;
+}
+
+.login-box {
+  background-color: var(--gris-medio);
+  border-radius: 4px;
+  padding: 3rem 2.5rem;
+  border: 1px solid var(--gris-oscuro);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.login-box h1 {
+  font-size: 2rem;
+  color: var(--blanco);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ===== REGISTER PAGE ===== */
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--negro) 0%, var(--gris-oscuro) 100%);
+  padding: 2rem 0;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 0 1rem;
+}
+
+.register-box {
+  background-color: var(--gris-medio);
+  border-radius: 4px;
+  padding: 3rem 2.5rem;
+  border: 1px solid var(--gris-oscuro);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.register-box h1 {
+  font-size: 2rem;
+  color: var(--blanco);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--plata);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* ===== FORMULARIOS ===== */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: var(--plata-claro);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: var(--gris-oscuro);
+  border: 1px solid var(--gris-medio);
+  color: var(--blanco);
+  font-size: 1rem;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+}
+
+.form-group input:focus {
+  outline: none;
+  border: 1px solid var(--rojo-japones);
+  box-shadow: 0 0 10px rgba(184, 0, 31, 0.3);
+}
+
+.form-group input::placeholder {
+  color: var(--plata);
+  opacity: 0.5;
+}
+
+/* ===== BOTONES ===== */
+.btn-submit {
+  width: 100%;
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+  border: 2px solid var(--rojo-japones);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(184, 0, 31, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+/* ===== MENSAJES DE ERROR ===== */
+.error-message {
+  background-color: rgba(184, 0, 31, 0.2);
+  border: 1px solid var(--rojo-japones);
+  color: var(--blanco);
+  padding: 1rem;
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* ===== LINKS DE REGISTRO/LOGIN ===== */
+.login-link,
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gris-oscuro);
+  color: var(--plata);
+  font-size: 0.95rem;
+}
+
+.login-link a,
+.register-link a {
+  color: var(--rojo-japones);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.login-link a:hover,
+.register-link a:hover {
+  color: var(--blanco);
+  text-decoration: underline;
+}

@@ -1,0 +1,258 @@
+.mis-pedidos-page {
+  min-height: 100vh;
+  background-color: var(--negro);
+  padding-bottom: 4rem;
+}
+
+.mis-pedidos-header {
+  background-color: var(--gris-oscuro);
+  border-bottom: 2px solid var(--rojo-japones);
+  padding: 3rem 0 2rem;
+  margin-bottom: 2rem;
+}
+
+.mis-pedidos-header h1 {
+  color: var(--blanco);
+  font-size: 2rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+}
+
+.mis-pedidos-header p {
+  color: var(--plata);
+}
+
+.no-pedidos {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.no-pedidos-icono {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.no-pedidos h3 {
+  color: var(--blanco);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.no-pedidos p {
+  color: var(--plata);
+  margin-bottom: 2rem;
+}
+
+.btn-ir-menu {
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+  border: 2px solid var(--rojo-japones);
+  padding: 0.8rem 2rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+}
+
+.btn-ir-menu:hover {
+  background-color: transparent;
+  color: var(--rojo-japones);
+}
+
+.pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pedido-card {
+  background-color: var(--gris-oscuro);
+  border: 1px solid var(--gris-medio);
+  border-left: 3px solid var(--gris-medio);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.pedido-card.abierto {
+  border-left-color: var(--rojo-japones);
+}
+
+.pedido-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pedido-card-header:hover {
+  background-color: rgba(255,255,255,0.03);
+}
+
+.pedido-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pedido-numero {
+  color: var(--blanco);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.pedido-fecha {
+  color: var(--plata);
+  font-size: 0.82rem;
+}
+
+.pedido-card-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pedido-total-mini {
+  color: var(--rojo-japones);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.estado-badge-pedido {
+  padding: 0.3rem 0.8rem;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado-recibido     { background-color: rgba(52,152,219,0.2); color: #3498db; }
+.estado-preparacion  { background-color: rgba(241,196,15,0.2); color: #f1c40f; }
+.estado-camino       { background-color: rgba(230,126,34,0.2); color: #e67e22; }
+.estado-entregado    { background-color: rgba(46,204,113,0.2); color: #2ecc71; }
+.estado-finalizado   { background-color: rgba(149,165,166,0.2); color: #95a5a6; }
+
+.pedido-toggle {
+  color: var(--plata);
+  font-size: 0.8rem;
+}
+
+.pedido-card-body {
+  padding: 1.5rem;
+  border-top: 1px solid var(--gris-medio);
+}
+
+/* Progreso */
+.pedido-progreso {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.progreso-estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0.35;
+  flex: 1;
+  min-width: 60px;
+}
+
+.progreso-estado.activo {
+  opacity: 1;
+}
+
+.progreso-estado-icono {
+  font-size: 1.4rem;
+}
+
+.progreso-estado span {
+  font-size: 0.72rem;
+  color: var(--plata);
+  text-align: center;
+}
+
+.progreso-estado.activo span {
+  color: var(--blanco);
+}
+
+.progreso-estado-linea {
+  flex: 1;
+  height: 2px;
+  background-color: var(--gris-medio);
+  margin-bottom: 1rem;
+  min-width: 20px;
+}
+
+.progreso-estado-linea.activo {
+  background-color: var(--rojo-japones);
+}
+
+/* Datos entrega */
+.pedido-datos-entrega {
+  background-color: var(--gris-medio);
+  padding: 0.8rem 1rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.pedido-datos-entrega p {
+  color: var(--plata);
+  font-size: 0.88rem;
+  margin-bottom: 0.3rem;
+}
+
+.pedido-datos-entrega p strong {
+  color: var(--blanco);
+}
+
+/* Platos */
+.pedido-platos {
+  background-color: var(--gris-medio);
+  padding: 0.8rem 1rem;
+  border-radius: 2px;
+}
+
+.pedido-plato-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--gris-oscuro);
+}
+
+.pedido-plato-nombre {
+  color: var(--blanco);
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.pedido-plato-cantidad {
+  color: var(--plata);
+  font-size: 0.85rem;
+  margin: 0 1rem;
+}
+
+.pedido-plato-precio {
+  color: var(--rojo-japones);
+  font-weight: 700;
+}
+
+.pedido-platos-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.8rem;
+  margin-top: 0.3rem;
+  border-top: 2px solid var(--rojo-japones);
+  color: var(--blanco);
+  font-weight: 700;
+}

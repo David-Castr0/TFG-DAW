@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import platosService from '../services/platosService';
+import authService from '../services/authService';
 import './Menu.css';
 
-function Menu() {
+function Menu({ carrito, setCarrito }) {
   const [categorias, setCategorias] = useState([]);
   const [platos, setPlatos] = useState([]);
   const [platosFiltrados, setPlatosFiltrados] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [mensajeLogin, setMensajeLogin] = useState(false);
 
   useEffect(() => {
     cargarDatos();
@@ -21,7 +23,6 @@ function Menu() {
         platosService.obtenerCategorias(),
         platosService.obtenerPlatosDisponibles()
       ]);
-      
       setCategorias(categoriasData);
       setPlatos(platosData);
       setPlatosFiltrados(platosData);
@@ -42,6 +43,26 @@ function Menu() {
       setPlatosFiltrados(filtrados);
       setCategoriaSeleccionada(idCategoria);
     }
+  };
+
+  const handleAnadir = (plato) => {
+    if (!authService.isAuthenticated()) {
+      setMensajeLogin(true);
+      setTimeout(() => setMensajeLogin(false), 3000);
+      return;
+    }
+
+    setCarrito(prev => {
+      const existe = prev.find(item => item.idPlato === plato.idPlato);
+      if (existe) {
+        return prev.map(item =>
+          item.idPlato === plato.idPlato
+            ? { ...item, cantidad: item.cantidad + 1 }
+            : item
+        );
+      }
+      return [...prev, { ...plato, cantidad: 1 }];
+    });
   };
 
   if (loading) {
@@ -70,6 +91,13 @@ function Menu() {
 
   return (
     <div className="menu-page">
+      {/* Mensaje sesión no iniciada */}
+      {mensajeLogin && (
+        <div className="mensaje-login-overlay">
+          Para añadir platos a la cesta primero debes iniciar sesión.
+        </div>
+      )}
+
       {/* Header del Menú */}
       <section className="menu-header">
         <div className="container">
@@ -113,8 +141,8 @@ function Menu() {
               {platosFiltrados.map(plato => (
                 <div key={plato.idPlato} className="plato-card">
                   <div className="plato-image">
-                    <img 
-                      src={plato.imagenUrl || 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400'} 
+                    <img
+                      src={plato.imagenUrl || 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400'}
                       alt={plato.nombre}
                       onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400'}
                     />
@@ -127,7 +155,7 @@ function Menu() {
                     <p className="plato-descripcion">{plato.descripcion || 'Delicioso plato de nuestra carta'}</p>
                     <div className="plato-footer">
                       <span className="plato-precio">{plato.precio.toFixed(2)}€</span>
-                      <button className="btn-add-cart">Añadir</button>
+                      <button className="btn-add-cart" onClick={() => handleAnadir(plato)}>Añadir</button>
                     </div>
                   </div>
                 </div>

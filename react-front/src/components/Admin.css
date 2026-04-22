@@ -493,3 +493,256 @@
         padding: 1.5rem;
     }
 }
+
+/* ===== PESTAÑAS ===== */
+.admin-tabs {
+  display: flex;
+  gap: 0;
+  background-color: var(--gris-oscuro);
+  border-bottom: 2px solid var(--rojo-japones);
+  padding: 0 2rem;
+}
+
+.admin-tab {
+  background: transparent;
+  border: none;
+  color: var(--plata);
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.admin-tab:hover {
+  color: var(--blanco);
+}
+
+.admin-tab.active {
+  color: var(--blanco);
+  border-bottom-color: var(--rojo-japones);
+}
+
+/* ===== GESTIÓN PLATOS / LOCALIZACIONES ===== */
+.gestion-section {
+  padding: 2rem 0;
+}
+
+.gestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.gestion-header h3 {
+  color: var(--blanco);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.btn-toggle {
+  padding: 0.4rem 1rem;
+  border-radius: 2px;
+  border: 2px solid;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+}
+
+.btn-toggle-desactivar {
+  background-color: transparent;
+  border-color: var(--rojo-japones);
+  color: var(--rojo-japones);
+}
+
+.btn-toggle-desactivar:hover {
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+}
+
+.btn-toggle-activar {
+  background-color: transparent;
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.btn-toggle-activar:hover {
+  background-color: #2ecc71;
+  color: var(--negro);
+}
+
+
+.gestion-header-acciones {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-crear {
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+  border: 2px solid var(--rojo-japones);
+  padding: 0.5rem 1.2rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+}
+
+.btn-crear:hover {
+  background-color: transparent;
+  color: var(--rojo-japones);
+}
+
+.btn-eliminar {
+  background-color: transparent;
+  border: 2px solid #e74c3c;
+  color: #e74c3c;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+}
+
+.btn-eliminar:hover {
+  background-color: #e74c3c;
+  color: var(--blanco);
+}
+
+.acciones-cell {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tabla-imagen {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--gris-medio);
+}
+
+.imagen-preview {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 2px;
+  margin-top: 0.5rem;
+  border: 1px solid var(--gris-medio);
+}
+
+.modal-body textarea {
+  width: 100%;
+  background-color: var(--gris-medio);
+  border: 1px solid var(--plata);
+  color: var(--blanco);
+  padding: 0.7rem;
+  border-radius: 2px;
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.modal-body textarea:focus {
+  outline: none;
+  border-color: var(--rojo-japones);
+}
+
+.tab-badge {
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.metodo-pago-badge {
+  font-size: 0.85rem;
+  color: var(--plata);
+}
+
+.pedido-detalle-info {
+  background-color: var(--gris-medio);
+  padding: 1rem 1.2rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.pedido-detalle-info p {
+  color: var(--plata);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.pedido-detalle-info p strong {
+  color: var(--blanco);
+}
+
+.pedido-detalle-platos {
+  background-color: var(--gris-medio);
+  padding: 1rem 1.2rem;
+  border-radius: 2px;
+}
+
+.pedido-detalle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--gris-oscuro);
+}
+
+.pedido-detalle-nombre {
+  color: var(--blanco);
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.pedido-detalle-cantidad {
+  color: var(--plata);
+  font-size: 0.85rem;
+  margin: 0 1rem;
+}
+
+.pedido-detalle-precio {
+  color: var(--rojo-japones);
+  font-weight: 700;
+}
+
+.pedido-detalle-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.8rem;
+  margin-top: 0.5rem;
+  border-top: 2px solid var(--rojo-japones);
+  color: var(--blanco);
+  font-weight: 700;
+  font-size: 1rem;
+}
