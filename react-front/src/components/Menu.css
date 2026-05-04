@@ -1,243 +1,339 @@
-/* ===== MENU PAGE ===== */
+/* =========================================
+   MENU.CSS - Estilos de la página del menú
+   Proyecto: Sushimi - TFG DAW
+   Descripción: Hero, filtros de categorías,
+   grid de platos y mensaje de login requerido
+   ========================================= */
+ 
+ 
+/* ===== PÁGINA PRINCIPAL ===== */
 .menu-page {
-    min-height: 100vh;
-    background-color: var(--negro);
+  min-height: 100vh;
+  background-color: var(--negro);
 }
-
-/* Menu Header */
+ 
+ 
+/* ===== HERO DEL MENÚ ===== */
+/* Cabecera con imagen de fondo de sushi */
 .menu-header {
-    background: linear-gradient(135deg, var(--gris-oscuro) 0%, var(--negro) 100%);
-    padding: 4rem 0 3rem;
-    border-bottom: 2px solid var(--rojo-japones);
+  height: 35vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('https://images.unsplash.com/photo-1553621042-f6e147245754?w=1920&h=600&fit=crop');
+  background-size: cover;
+  background-position: center;
 }
-
+ 
+/* Capa oscura sobre la imagen */
+.menu-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.88) 0%, rgba(184, 0, 31, 0.35) 100%);
+}
+ 
+/* El contenedor debe estar por encima del overlay */
+.menu-header .container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+ 
 .menu-title {
-    font-size: 3rem;
-    color: var(--blanco);
-    text-align: center;
-    letter-spacing: 3px;
-    margin-bottom: 1rem;
+  font-size: 3rem;
+  color: var(--blanco);
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
-
+ 
 .menu-subtitle {
-    text-align: center;
-    color: var(--plata);
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+  color: var(--plata-claro);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
 }
-
-/* Filtros de Categorías */
+ 
+ 
+/* ===== FILTROS DE CATEGORÍAS ===== */
+/* Barra pegajosa que se queda fija al hacer scroll */
 .menu-filters {
-    background-color: var(--gris-oscuro);
-    padding: 2rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background-color: var(--gris-oscuro);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 70px;
+  z-index: 100;
+  border-bottom: 2px solid var(--rojo-japones);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
-
+ 
+/* Botones de filtro centrados y con salto de línea */
 .categories-filter {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-
+ 
+/* Cada botón de categoría */
 .filter-btn {
-    background-color: transparent;
-    border: 2px solid var(--gris-medio);
-    color: var(--plata);
-    padding: 0.7rem 1.5rem;
-    border-radius: 2px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    font-family: var(--font-primary);
+  background-color: transparent;
+  border: 1px solid var(--gris-medio);
+  color: var(--plata);
+  padding: 0.6rem 1.3rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
 }
-
+ 
 .filter-btn:hover {
-    border-color: var(--rojo-japones);
-    color: var(--blanco);
-    transform: translateY(-2px);
+  border-color: var(--rojo-japones);
+  color: var(--blanco);
+  background-color: rgba(184, 0, 31, 0.1);
 }
-
+ 
+/* Categoría seleccionada */
 .filter-btn.active {
-    background-color: var(--rojo-japones);
-    border-color: var(--rojo-japones);
-    color: var(--blanco);
+  background-color: var(--rojo-japones);
+  border-color: var(--rojo-japones);
+  color: var(--blanco);
+  box-shadow: 0 4px 15px rgba(184, 0, 31, 0.4);
 }
-
-/* Menu Content */
+ 
+ 
+/* ===== SECCIÓN PRINCIPAL DEL MENÚ ===== */
 .menu-content {
-    padding: 4rem 0;
+  padding: 4rem 0;
 }
-
+ 
+/* Grid adaptable de tarjetas de platos */
 .platos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
 }
-
+ 
+ 
+/* ===== TARJETA DE CADA PLATO ===== */
 .plato-card {
-    background-color: var(--gris-oscuro);
-    border-radius: 4px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border: 1px solid var(--gris-medio);
+  background-color: var(--gris-oscuro);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  border: 1px solid var(--gris-medio);
+  display: flex;
+  flex-direction: column;
 }
-
+ 
 .plato-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(184, 0, 31, 0.3);
-    border-color: var(--rojo-japones);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(184, 0, 31, 0.25);
+  border-color: var(--rojo-japones);
 }
-
+ 
+/* Imagen del plato */
 .plato-image {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
 }
-
+ 
 .plato-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
-
+ 
+/* Efecto zoom en la imagen al hacer hover */
 .plato-card:hover .plato-image img {
-    transform: scale(1.1);
+  transform: scale(1.08);
 }
-
+ 
+/* Badge de categoría sobre la imagen */
 .plato-categoria-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background-color: rgba(184, 0, 31, 0.9);
-    color: var(--blanco);
-    padding: 0.5rem 1rem;
-    border-radius: 2px;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 600;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: rgba(184, 0, 31, 0.92);
+  color: var(--blanco);
+  padding: 0.35rem 0.9rem;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
 }
-
+ 
+/* Información del plato */
 .plato-info {
-    padding: 1.5rem;
+  padding: 1.4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
-
+ 
 .plato-nombre {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.7rem;
-    color: var(--blanco);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: var(--blanco);
+  letter-spacing: 0.5px;
 }
-
+ 
 .plato-descripcion {
-    color: var(--plata);
-    margin-bottom: 1.2rem;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    min-height: 3em;
+  color: var(--plata);
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  flex: 1;
 }
-
+ 
+/* Parte inferior de la tarjeta con precio y botón */
 .plato-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--gris-medio);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gris-medio);
+  margin-top: auto;
 }
-
+ 
 .plato-precio {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--rojo-japones);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--rojo-japones);
+  letter-spacing: 0.5px;
 }
-
+ 
+/* Botón para añadir el plato al carrito */
 .btn-add-cart {
-    background-color: var(--rojo-japones);
-    color: var(--blanco);
-    border: 2px solid var(--rojo-japones);
-    padding: 0.6rem 1.5rem;
-    border-radius: 2px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    font-family: var(--font-primary);
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+  border: 2px solid var(--rojo-japones);
+  padding: 0.6rem 1.3rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
 }
-
+ 
 .btn-add-cart:hover {
-    background-color: transparent;
-    color: var(--rojo-japones);
-    transform: translateY(-2px);
+  background-color: transparent;
+  color: var(--rojo-japones);
 }
-
-/* Loading y Error States */
+ 
+ 
+/* ===== MENSAJE DE LOGIN REQUERIDO ===== */
+/* Aparece cuando un usuario sin sesión intenta añadir al carrito */
+.mensaje-login-overlay {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--gris-oscuro);
+  border: 1px solid var(--rojo-japones);
+  border-left: 4px solid var(--rojo-japones);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+  border-radius: 2px;
+  z-index: 3000;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 30px rgba(184, 0, 31, 0.3);
+  text-align: center;
+  white-space: nowrap;
+  animation: slideDown 0.3s ease;
+}
+ 
+/* Animación de entrada del mensaje */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+ 
+ 
+/* ===== ESTADOS DE CARGA Y ERROR ===== */
 .loading-container,
 .error-container,
 .no-platos {
-    text-align: center;
-    padding: 5rem 2rem;
+  text-align: center;
+  padding: 5rem 2rem;
 }
-
+ 
 .loading-text {
-    font-size: 1.5rem;
-    color: var(--plata);
+  font-size: 1.5rem;
+  color: var(--plata);
+  letter-spacing: 1px;
 }
-
+ 
 .error-text {
-    font-size: 1.2rem;
-    color: var(--rojo-japones);
+  font-size: 1.2rem;
+  color: var(--rojo-japones);
 }
-
+ 
 .no-platos p {
-    font-size: 1.2rem;
-    color: var(--plata);
+  font-size: 1.2rem;
+  color: var(--plata);
 }
-
-/* Responsive - Menu */
+ 
+ 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .menu-title {
-        font-size: 2rem;
-    }
-    
-    .menu-subtitle {
-        font-size: 1rem;
-    }
-    
-    .categories-filter {
-        gap: 0.5rem;
-    }
-    
-    .filter-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-    }
-    
-    .platos-grid {
-        grid-template-columns: 1fr;
-    }
+  .menu-header {
+    height: 25vh;
+  }
+ 
+  .menu-title {
+    font-size: 2rem;
+  }
+ 
+  .menu-subtitle {
+    font-size: 1rem;
+  }
+ 
+  .categories-filter {
+    gap: 0.5rem;
+  }
+ 
+  .filter-btn {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.75rem;
+  }
+ 
+  .platos-grid {
+    grid-template-columns: 1fr;
+  }
 }
-
+ 
 @media (max-width: 480px) {
-    .menu-header {
-        padding: 2rem 0;
-    }
-    
-    .plato-nombre {
-        font-size: 1.2rem;
-    }
-    
-    .plato-precio {
-        font-size: 1.5rem;
-    }
+  .menu-title {
+    font-size: 1.6rem;
+  }
+ 
+  .plato-nombre {
+    font-size: 1.1rem;
+  }
+ 
+  .plato-precio {
+    font-size: 1.4rem;
+  }
 }

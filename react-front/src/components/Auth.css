@@ -1,4 +1,12 @@
-/* ===== LOGIN PAGE ===== */
+/* =========================================
+   AUTH.CSS - Estilos de login y registro
+   Proyecto: Sushimi - TFG DAW
+   Descripción: Formularios de inicio de
+   sesión y registro de nuevos usuarios
+   ========================================= */
+ 
+ 
+/* ===== PÁGINA DE LOGIN ===== */
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -7,13 +15,14 @@
   background: linear-gradient(135deg, var(--negro) 0%, var(--gris-oscuro) 100%);
   padding: 2rem 0;
 }
-
+ 
 .login-container {
   width: 100%;
   max-width: 450px;
   padding: 0 1rem;
 }
-
+ 
+/* Caja del formulario de login */
 .login-box {
   background-color: var(--gris-medio);
   border-radius: 4px;
@@ -21,7 +30,7 @@
   border: 1px solid var(--gris-oscuro);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
-
+ 
 .login-box h1 {
   font-size: 2rem;
   color: var(--blanco);
@@ -29,8 +38,9 @@
   text-align: center;
   letter-spacing: 2px;
 }
-
-/* ===== REGISTER PAGE ===== */
+ 
+ 
+/* ===== PÁGINA DE REGISTRO ===== */
 .register-page {
   min-height: 100vh;
   display: flex;
@@ -39,13 +49,14 @@
   background: linear-gradient(135deg, var(--negro) 0%, var(--gris-oscuro) 100%);
   padding: 2rem 0;
 }
-
+ 
 .register-container {
   width: 100%;
   max-width: 500px;
   padding: 0 1rem;
 }
-
+ 
+/* Caja del formulario de registro */
 .register-box {
   background-color: var(--gris-medio);
   border-radius: 4px;
@@ -53,7 +64,7 @@
   border: 1px solid var(--gris-oscuro);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
-
+ 
 .register-box h1 {
   font-size: 2rem;
   color: var(--blanco);
@@ -61,19 +72,21 @@
   text-align: center;
   letter-spacing: 2px;
 }
-
+ 
+/* Subtítulo debajo del título */
 .subtitle {
   text-align: center;
   color: var(--plata);
   margin-bottom: 2rem;
   font-size: 0.95rem;
 }
-
-/* ===== FORMULARIOS ===== */
+ 
+ 
+/* ===== CAMPOS DEL FORMULARIO ===== */
 .form-group {
   margin-bottom: 1.5rem;
 }
-
+ 
 .form-group label {
   display: block;
   color: var(--plata-claro);
@@ -82,7 +95,8 @@
   letter-spacing: 1px;
   margin-bottom: 0.5rem;
 }
-
+ 
+/* Input genérico de los formularios */
 .form-group input {
   width: 100%;
   padding: 0.9rem;
@@ -94,19 +108,20 @@
   transition: all 0.3s ease;
   font-family: var(--font-primary);
 }
-
+ 
 .form-group input:focus {
   outline: none;
-  border: 1px solid var(--rojo-japones);
+  border-color: var(--rojo-japones);
   box-shadow: 0 0 10px rgba(184, 0, 31, 0.3);
 }
-
+ 
 .form-group input::placeholder {
   color: var(--plata);
   opacity: 0.5;
 }
-
-/* ===== BOTONES ===== */
+ 
+ 
+/* ===== BOTÓN DE ENVÍO ===== */
 .btn-submit {
   width: 100%;
   background-color: var(--rojo-japones);
@@ -122,23 +137,26 @@
   transition: all 0.3s ease;
   margin-top: 1rem;
 }
-
+ 
 .btn-submit:hover:not(:disabled) {
   background-color: transparent;
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(184, 0, 31, 0.3);
 }
-
+ 
+/* Estado deshabilitado mientras carga */
 .btn-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-
+ 
 .btn-submit:active {
   transform: translateY(0);
 }
-
-/* ===== MENSAJES DE ERROR ===== */
+ 
+ 
+/* ===== MENSAJE DE ERROR ===== */
+/* Se muestra cuando hay un error en el login o registro */
 .error-message {
   background-color: rgba(184, 0, 31, 0.2);
   border: 1px solid var(--rojo-japones);
@@ -149,8 +167,9 @@
   text-align: center;
   font-size: 0.95rem;
 }
-
-/* ===== LINKS DE REGISTRO/LOGIN ===== */
+ 
+ 
+/* ===== ENLACES DE NAVEGACIÓN ENTRE LOGIN Y REGISTRO ===== */
 .login-link,
 .register-link {
   text-align: center;
@@ -160,7 +179,7 @@
   color: var(--plata);
   font-size: 0.95rem;
 }
-
+ 
 .login-link a,
 .register-link a {
   color: var(--rojo-japones);
@@ -168,7 +187,7 @@
   font-weight: 600;
   transition: all 0.3s ease;
 }
-
+ 
 .login-link a:hover,
 .register-link a:hover {
   color: var(--blanco);

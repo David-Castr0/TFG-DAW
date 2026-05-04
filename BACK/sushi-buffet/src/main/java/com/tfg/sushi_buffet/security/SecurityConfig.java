@@ -57,6 +57,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/localizaciones/**").permitAll()
                 .requestMatchers("/api/mesas/**").permitAll()
                 .requestMatchers("/api/reservas/**").permitAll()
+                .requestMatchers("/api/pedidos/**").permitAll()           // ← AÑADIR
+                .requestMatchers("/api/detalle-pedidos/**").permitAll()   // ← AÑADIR
+                .requestMatchers("/api/imagenes/**").permitAll()
+                .requestMatchers("/api/upload/**").permitAll()
                 
                 // Endpoints protegidos solo para ADMIN
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")

@@ -1,48 +1,65 @@
+s · CSS
+Copiar
+
+/* =========================================
+   MISPEDIDOS.CSS - Estilos del historial de pedidos
+   Proyecto: Sushimi - TFG DAW
+   Descripción: Listado de pedidos del usuario,
+   detalle desplegable y barra de progreso del estado
+   ========================================= */
+ 
+ 
+/* ===== PÁGINA PRINCIPAL ===== */
 .mis-pedidos-page {
   min-height: 100vh;
   background-color: var(--negro);
   padding-bottom: 4rem;
 }
-
+ 
+ 
+/* ===== CABECERA DE LA PÁGINA ===== */
 .mis-pedidos-header {
   background-color: var(--gris-oscuro);
   border-bottom: 2px solid var(--rojo-japones);
   padding: 3rem 0 2rem;
   margin-bottom: 2rem;
 }
-
+ 
 .mis-pedidos-header h1 {
   color: var(--blanco);
   font-size: 2rem;
   letter-spacing: 3px;
   margin-bottom: 0.5rem;
 }
-
+ 
 .mis-pedidos-header p {
   color: var(--plata);
 }
-
+ 
+ 
+/* ===== MENSAJE CUANDO NO HAY PEDIDOS ===== */
 .no-pedidos {
   text-align: center;
   padding: 4rem 0;
 }
-
+ 
 .no-pedidos-icono {
   font-size: 4rem;
   margin-bottom: 1rem;
 }
-
+ 
 .no-pedidos h3 {
   color: var(--blanco);
   font-size: 1.4rem;
   margin-bottom: 0.5rem;
 }
-
+ 
 .no-pedidos p {
   color: var(--plata);
   margin-bottom: 2rem;
 }
-
+ 
+/* Botón para ir al menú cuando no hay pedidos */
 .btn-ir-menu {
   background-color: var(--rojo-japones);
   color: var(--blanco);
@@ -57,12 +74,14 @@
   font-family: var(--font-primary);
   transition: all 0.3s ease;
 }
-
+ 
 .btn-ir-menu:hover {
   background-color: transparent;
   color: var(--rojo-japones);
 }
-
+ 
+ 
+/* ===== LISTA DE PEDIDOS ===== */
 .pedidos-lista {
   display: flex;
   flex-direction: column;
@@ -70,7 +89,10 @@
   max-width: 800px;
   margin: 0 auto;
 }
-
+ 
+ 
+/* ===== TARJETA DE CADA PEDIDO ===== */
+/* Tiene un borde izquierdo que se vuelve rojo cuando está abierto */
 .pedido-card {
   background-color: var(--gris-oscuro);
   border: 1px solid var(--gris-medio);
@@ -79,11 +101,12 @@
   overflow: hidden;
   transition: border-color 0.3s;
 }
-
+ 
 .pedido-card.abierto {
   border-left-color: var(--rojo-japones);
 }
-
+ 
+/* Cabecera clickable del pedido */
 .pedido-card-header {
   display: flex;
   justify-content: space-between;
@@ -92,72 +115,79 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
+ 
 .pedido-card-header:hover {
-  background-color: rgba(255,255,255,0.03);
+  background-color: rgba(255, 255, 255, 0.03);
 }
-
+ 
 .pedido-card-left {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-
+ 
 .pedido-numero {
   color: var(--blanco);
   font-weight: 700;
   font-size: 1rem;
 }
-
+ 
 .pedido-fecha {
   color: var(--plata);
   font-size: 0.82rem;
 }
-
+ 
 .pedido-card-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-
+ 
+/* Total del pedido en la cabecera */
 .pedido-total-mini {
   color: var(--rojo-japones);
   font-weight: 700;
   font-size: 1rem;
 }
-
+ 
+/* Badge del estado actual del pedido */
 .estado-badge-pedido {
   padding: 0.3rem 0.8rem;
   border-radius: 2px;
   font-size: 0.8rem;
   font-weight: 600;
 }
-
-.estado-recibido     { background-color: rgba(52,152,219,0.2); color: #3498db; }
-.estado-preparacion  { background-color: rgba(241,196,15,0.2); color: #f1c40f; }
-.estado-camino       { background-color: rgba(230,126,34,0.2); color: #e67e22; }
-.estado-entregado    { background-color: rgba(46,204,113,0.2); color: #2ecc71; }
-.estado-finalizado   { background-color: rgba(149,165,166,0.2); color: #95a5a6; }
-
+ 
+/* Colores para cada estado del pedido */
+.estado-recibido    { background-color: rgba(52, 152, 219, 0.2); color: #3498db; }
+.estado-preparacion { background-color: rgba(241, 196, 15, 0.2); color: #f1c40f; }
+.estado-camino      { background-color: rgba(230, 126, 34, 0.2); color: #e67e22; }
+.estado-entregado   { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+.estado-finalizado  { background-color: rgba(149, 165, 166, 0.2); color: #95a5a6; }
+ 
+/* Flecha de expandir/colapsar */
 .pedido-toggle {
   color: var(--plata);
   font-size: 0.8rem;
 }
-
+ 
+ 
+/* ===== CUERPO DESPLEGABLE DEL PEDIDO ===== */
 .pedido-card-body {
   padding: 1.5rem;
   border-top: 1px solid var(--gris-medio);
 }
-
-/* Progreso */
+ 
+ 
+/* ===== BARRA DE PROGRESO DEL ESTADO ===== */
+/* Muestra visualmente en qué fase está el pedido */
 .pedido-progreso {
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
-  gap: 0;
 }
-
+ 
 .progreso-estado {
   display: flex;
   flex-direction: column;
@@ -167,25 +197,27 @@
   flex: 1;
   min-width: 60px;
 }
-
+ 
+/* Estado activo se ve al 100% de opacidad */
 .progreso-estado.activo {
   opacity: 1;
 }
-
+ 
 .progreso-estado-icono {
   font-size: 1.4rem;
 }
-
+ 
 .progreso-estado span {
   font-size: 0.72rem;
   color: var(--plata);
   text-align: center;
 }
-
+ 
 .progreso-estado.activo span {
   color: var(--blanco);
 }
-
+ 
+/* Línea entre estados de la barra de progreso */
 .progreso-estado-linea {
   flex: 1;
   height: 2px;
@@ -193,60 +225,64 @@
   margin-bottom: 1rem;
   min-width: 20px;
 }
-
+ 
+/* Línea roja para estados ya completados */
 .progreso-estado-linea.activo {
   background-color: var(--rojo-japones);
 }
-
-/* Datos entrega */
+ 
+ 
+/* ===== DATOS DE ENTREGA DEL PEDIDO ===== */
 .pedido-datos-entrega {
   background-color: var(--gris-medio);
   padding: 0.8rem 1rem;
   border-radius: 2px;
   margin-bottom: 1rem;
 }
-
+ 
 .pedido-datos-entrega p {
   color: var(--plata);
   font-size: 0.88rem;
   margin-bottom: 0.3rem;
 }
-
+ 
 .pedido-datos-entrega p strong {
   color: var(--blanco);
 }
-
-/* Platos */
+ 
+ 
+/* ===== LISTA DE PLATOS DEL PEDIDO ===== */
 .pedido-platos {
   background-color: var(--gris-medio);
   padding: 0.8rem 1rem;
   border-radius: 2px;
 }
-
+ 
 .pedido-plato-item {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--gris-oscuro);
 }
-
+ 
 .pedido-plato-nombre {
   color: var(--blanco);
   font-size: 0.9rem;
   flex: 1;
 }
-
+ 
 .pedido-plato-cantidad {
   color: var(--plata);
   font-size: 0.85rem;
   margin: 0 1rem;
 }
-
+ 
 .pedido-plato-precio {
   color: var(--rojo-japones);
   font-weight: 700;
 }
-
+ 
+/* Total al final de la lista de platos */
 .pedido-platos-total {
   display: flex;
   justify-content: space-between;

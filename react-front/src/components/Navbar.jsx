@@ -18,7 +18,6 @@ function Navbar({ carrito, setCarrito }) {
     }
   }, [location]);
 
-  // Cerrar menú al cambiar de página
   useEffect(() => {
     setMenuAbierto(false);
   }, [location]);
@@ -64,7 +63,6 @@ function Navbar({ carrito, setCarrito }) {
     <>
       <header className="header">
         <div className="container">
-          {/* Botón hamburguesa */}
           <button className="btn-hamburguesa" onClick={() => setMenuAbierto(true)}>
             <span></span>
             <span></span>
@@ -87,10 +85,14 @@ function Navbar({ carrito, setCarrito }) {
                 <span className="user-greeting">
                   Hola, <strong>{user.nombre || user.username}</strong>
                 </span>
-                <button className="btn-carrito" onClick={() => setCarritoAbierto(true)}>
-                  🛒
-                  {totalItems > 0 && <span className="carrito-badge">{totalItems}</span>}
-                </button>
+                {user.rol === 'ADMIN' ? (
+                  <Link to="/admin" className="btn-nav-admin">Panel Admin</Link>
+                ) : (
+                  <button className="btn-carrito" onClick={() => setCarritoAbierto(true)}>
+                    🛒
+                    {totalItems > 0 && <span className="carrito-badge">{totalItems}</span>}
+                  </button>
+                )}
                 <button onClick={handleLogout} className="btn-nav-logout">Cerrar Sesión</button>
               </>
             )}
@@ -98,12 +100,10 @@ function Navbar({ carrito, setCarrito }) {
         </div>
       </header>
 
-      {/* Overlay menú lateral */}
       {menuAbierto && (
         <div className="menu-overlay" onClick={() => setMenuAbierto(false)} />
       )}
 
-      {/* Panel menú lateral izquierdo */}
       <div className={`menu-panel ${menuAbierto ? 'menu-panel-abierto' : ''}`}>
         <div className="menu-panel-header">
           <div className="menu-logo">SUSHIMI</div>
@@ -120,14 +120,11 @@ function Navbar({ carrito, setCarrito }) {
           <Link to="/localizaciones" className={location.pathname === '/localizaciones' ? 'menu-link active' : 'menu-link'}>
             <span className="menu-link-icono">📍</span> Localizaciones
           </Link>
-          <Link to="/reservas" className={location.pathname === '/reservas' ? 'menu-link active' : 'menu-link'}>
-            <span className="menu-link-icono">📅</span> Reservar
-          </Link>
           <Link to="/mis-reservas" className={location.pathname === '/mis-reservas' ? 'menu-link active' : 'menu-link'}>
             <span className="menu-link-icono">📋</span> Mis Reservas
           </Link>
 
-          {user && (
+          {user && user.rol !== 'ADMIN' && (
             <Link to="/mis-pedidos" className={location.pathname === '/mis-pedidos' ? 'menu-link active' : 'menu-link'}>
               <span className="menu-link-icono">🛵</span> Mis Pedidos
             </Link>
@@ -135,7 +132,7 @@ function Navbar({ carrito, setCarrito }) {
 
           {user && user.rol === 'ADMIN' && (
             <Link to="/admin" className={location.pathname === '/admin' ? 'menu-link active' : 'menu-link'}>
-              <span className="menu-link-icono">⚙️</span> Admin
+              <span className="menu-link-icono">⚙️</span> Panel Admin
             </Link>
           )}
         </nav>
@@ -158,12 +155,10 @@ function Navbar({ carrito, setCarrito }) {
         </div>
       </div>
 
-      {/* Carrito overlay */}
       {carritoAbierto && (
         <div className="carrito-overlay" onClick={() => setCarritoAbierto(false)} />
       )}
 
-      {/* Panel carrito */}
       <div className={`carrito-panel ${carritoAbierto ? 'carrito-panel-abierto' : ''}`}>
         <div className="carrito-panel-header">
           <h3 className="carrito-titulo">Tu pedido</h3>

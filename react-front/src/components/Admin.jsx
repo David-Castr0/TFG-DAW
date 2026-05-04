@@ -39,12 +39,33 @@ function Admin() {
   const [nuevoPlato, setNuevoPlato] = useState({
     nombre: '', descripcion: '', precio: '', imagenUrl: '', categoria: { idCategoria: '' }
   });
+  const [imagenFile, setImagenFile] = useState(null);
+  const [imagenPreview, setImagenPreview] = useState('');
+
+  // Modal editar plato
+  const [showModalEditarPlato, setShowModalEditarPlato] = useState(false);
+  const [platoEditando, setPlatoEditando] = useState(null);
 
   // Modal crear localizacion
   const [showModalLocalizacion, setShowModalLocalizacion] = useState(false);
   const [nuevaLocalizacion, setNuevaLocalizacion] = useState({
     nombre: '', direccion: '', telefono: '', ciudad: '', horarioApertura: '', horarioCierre: ''
   });
+
+  // Modal editar localizacion
+  const [showModalEditarLocalizacion, setShowModalEditarLocalizacion] = useState(false);
+  const [localizacionEditando, setLocalizacionEditando] = useState(null);
+
+  // Popup de acciones (rueda de configuración)
+  const [popupAcciones, setPopupAcciones] = useState(null);
+  const [popupTipo, setPopupTipo] = useState(null);
+
+  // Cierra el popup al hacer click fuera
+  useEffect(() => {
+    const handleClickFuera = () => setPopupAcciones(null);
+    document.addEventListener('click', handleClickFuera);
+    return () => document.removeEventListener('click', handleClickFuera);
+  }, []);
 
   useEffect(() => {
     const user = authService.getCurrentUser();
@@ -55,6 +76,14 @@ function Admin() {
     }
     cargarDatos();
   }, [navigate]);
+
+  useEffect(() => {
+    if (imagenFile) {
+      const url = URL.createObjectURL(imagenFile);
+      setImagenPreview(url);
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [imagenFile]);
 
   const cargarDatos = async () => {
     setLoading(true);
@@ -222,6 +251,80 @@ function Admin() {
     }
   };
 
+  const handleEditarPlatoChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'categoria') {
+      setPlatoEditando(prev => ({ ...prev, categoria: { ...prev.categoria, idCategoria: parseInt(value) } }));
+    } else {
+      setPlatoEditando(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleEditarLocalizacionChange = (e) => {
+    const { name, value } = e.target;
+    setLocalizacionEditando(prev => ({ ...prev, [name]: value }));
+  };
+
+  const abrirEditarPlato = (plato) => {
+    setPlatoEditando({ ...plato });
+    setShowModalEditarPlato(true);
+  };
+
+  const abrirEditarLocalizacion = (loc) => {
+    setLocalizacionEditando({ ...loc });
+    setShowModalEditarLocalizacion(true);
+  };
+
+  const guardarEdicionPlato = async () => {
+    if (!platoEditando.nombre || !platoEditando.precio || !platoEditando.categoria.idCategoria) {
+      alert('Por favor rellena al menos el nombre, precio y categoría.');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/platos/${platoEditando.idPlato}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(platoEditando)
+      });
+      if (response.ok) {
+        alert('Plato actualizado correctamente.');
+        setShowModalEditarPlato(false);
+        setPlatoEditando(null);
+        cargarDatos();
+      } else {
+        alert('Error al actualizar el plato.');
+      }
+    } catch (err) {
+      alert('Error al actualizar el plato.');
+    }
+  };
+
+  const guardarEdicionLocalizacion = async () => {
+    if (!localizacionEditando.nombre || !localizacionEditando.direccion || !localizacionEditando.ciudad) {
+      alert('Por favor rellena al menos el nombre, dirección y ciudad.');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/localizaciones/${localizacionEditando.idLocalizacion}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(localizacionEditando)
+      });
+      if (response.ok) {
+        alert('Localización actualizada correctamente.');
+        setShowModalEditarLocalizacion(false);
+        setLocalizacionEditando(null);
+        cargarDatos();
+      } else {
+        alert('Error al actualizar la localización.');
+      }
+    } catch (err) {
+      alert('Error al actualizar la localización.');
+    }
+  };
+
   const crearPlato = async () => {
     if (!nuevoPlato.nombre || !nuevoPlato.precio || !nuevoPlato.categoria.idCategoria) {
       alert('Por favor rellena al menos el nombre, precio y categoría.');
@@ -229,16 +332,44 @@ function Admin() {
     }
     try {
       const token = localStorage.getItem('token');
-      const platoAEnviar = { ...nuevoPlato, precio: parseFloat(nuevoPlato.precio), disponible: true };
+      let imagenUrl = nuevoPlato.imagenUrl;
+
+      if (imagenFile) {
+        const formData = new FormData();
+        formData.append('file', imagenFile);
+        const uploadResponse = await fetch('http://localhost:8080/api/upload/imagen', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        if (uploadResponse.ok) {
+          const uploadData = await uploadResponse.json();
+          imagenUrl = uploadData.url;
+        } else {
+          alert('Error al subir la imagen.');
+          return;
+        }
+      }
+
+      const platoAEnviar = {
+        ...nuevoPlato,
+        precio: parseFloat(nuevoPlato.precio),
+        disponible: true,
+        imagenUrl
+      };
+
       const response = await fetch('http://localhost:8080/api/platos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(platoAEnviar)
       });
+
       if (response.ok) {
         alert('Plato creado correctamente.');
         setShowModalPlato(false);
         setNuevoPlato({ nombre: '', descripcion: '', precio: '', imagenUrl: '', categoria: { idCategoria: '' } });
+        setImagenFile(null);
+        setImagenPreview('');
         cargarDatos();
       } else {
         alert('Error al crear el plato.');
@@ -249,7 +380,7 @@ function Admin() {
   };
 
   const eliminarPlato = async (idPlato) => {
-    if (!window.confirm('¿Estás seguro de que quieres eliminar este plato? Esta acción no se puede deshacer.')) return;
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este plato?')) return;
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:8080/api/platos/${idPlato}`, {
@@ -347,8 +478,8 @@ function Admin() {
         <button className={`admin-tab ${pestanaActiva === 'reservas' ? 'active' : ''}`} onClick={() => setPestanaActiva('reservas')}>Reservas</button>
         <button className={`admin-tab ${pestanaActiva === 'pedidos' ? 'active' : ''}`} onClick={() => setPestanaActiva('pedidos')}>
           Pedidos a Domicilio
-          {pedidosDomicilio.filter(p => p.estado === 'activo').length > 0 && (
-            <span className="tab-badge">{pedidosDomicilio.filter(p => p.estado === 'activo').length}</span>
+          {pedidosDomicilio.filter(p => p.estado === 'recibido' || p.estado === 'en_preparacion' || p.estado === 'en_camino').length > 0 && (
+            <span className="tab-badge">{pedidosDomicilio.filter(p => p.estado === 'recibido' || p.estado === 'en_preparacion' || p.estado === 'en_camino').length}</span>
           )}
         </button>
         <button className={`admin-tab ${pestanaActiva === 'platos' ? 'active' : ''}`} onClick={() => setPestanaActiva('platos')}>Platos</button>
@@ -440,11 +571,31 @@ function Admin() {
                                 {getTextoEstado(reserva.estado)}
                               </span>
                             </td>
-                            <td>
-                              <button onClick={() => abrirModal(reserva)} className="btn-cambiar-estado">
-                                Cambiar Estado
-                              </button>
-                            </td>
+                            <td className="acciones-cell">
+                            <button
+                              className="btn-acciones"
+                              onClick={(e) => {
+                              e.stopPropagation();
+                              setPopupAcciones(reserva.idReserva);
+                              setPopupTipo('reserva');
+                              }}
+                            >
+                          ⚙️
+                          </button>
+  {popupAcciones === reserva.idReserva && popupTipo === 'reserva' && (
+    <div className="acciones-popup">
+      <button 
+        className="popup-opcion popup-editar" 
+        onClick={() => { 
+          abrirModal(reserva); 
+          setPopupAcciones(null); 
+        }}
+      >
+        ✏️ Cambiar Estado
+      </button>
+    </div>
+  )}
+</td>
                           </tr>
                         ))}
                       </tbody>
@@ -477,14 +628,8 @@ function Admin() {
                 <table className="reservas-table">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Fecha y hora</th>
-                      <th>Cliente</th>
-                      <th>Teléfono</th>
-                      <th>Dirección</th>
-                      <th>Pago</th>
-                      <th>Estado</th>
-                      <th>Acciones</th>
+                      <th>ID</th><th>Fecha y hora</th><th>Cliente</th><th>Teléfono</th>
+                      <th>Dirección</th><th>Pago</th><th>Estado</th><th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -497,24 +642,42 @@ function Admin() {
                         <td>{pedido.direccionEntrega}</td>
                         <td>
                           <span className="metodo-pago-badge">
-                            {pedido.metodoPago === 'efectivo' ? ' Efectivo' : '💳 Tarjeta'}
+                            {pedido.metodoPago === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}
                           </span>
                         </td>
                         <td>
-                          <span className={`estado-badge ${pedido.estado === 'activo' ? 'estado-pendiente' : 'estado-completada'}`}>
-                            {pedido.estado === 'activo' ? 'En curso' : 'Finalizado'}
+                          <span className={`estado-badge estado-${pedido.estado}`}>
+                            {pedido.estado === 'recibido' ? 'Recibido' :
+                             pedido.estado === 'en_preparacion' ? 'En preparación' :
+                             pedido.estado === 'en_camino' ? 'En camino' :
+                             pedido.estado === 'entregado' ? 'Entregado' : 'Finalizado'}
                           </span>
                         </td>
                         <td className="acciones-cell">
-                          <button className="btn-cambiar-estado" onClick={() => verDetallePedido(pedido)}>
-                            Ver detalle
-                          </button>
-                          {pedido.estado === 'activo' && (
-                            <button className="btn-toggle btn-toggle-activar" onClick={() => cambiarEstadoPedido(pedido.idPedido, 'finalizado')}>
-                              Finalizar
-                            </button>
-                          )}
-                        </td>
+  <button
+    className="btn-acciones"
+    onClick={(e) => {
+      e.stopPropagation();
+      setPopupAcciones(pedido.idPedido);
+      setPopupTipo('pedido');
+    }}
+  >
+  ⚙️
+  </button>
+  {popupAcciones === pedido.idPedido && popupTipo === 'pedido' && (
+    <div className="acciones-popup">
+      <button 
+        className="popup-opcion popup-editar" 
+        onClick={() => { 
+          verDetallePedido(pedido); 
+          setPopupAcciones(null); 
+        }}
+      >
+        👁️ Ver detalle
+      </button>
+    </div>
+  )}
+</td>
                       </tr>
                     ))}
                   </tbody>
@@ -565,12 +728,31 @@ function Admin() {
                       </td>
                       <td className="acciones-cell">
                         <button
-                          className={`btn-toggle ${plato.disponible ? 'btn-toggle-desactivar' : 'btn-toggle-activar'}`}
-                          onClick={() => toggleDisponibilidadPlato(plato)}
+                          className="btn-acciones"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPopupAcciones(plato.idPlato);
+                            setPopupTipo('plato');
+                          }}
                         >
-                          {plato.disponible ? 'Desactivar' : 'Activar'}
+                          ⚙️
                         </button>
-                        <button className="btn-eliminar" onClick={() => eliminarPlato(plato.idPlato)}>Eliminar</button>
+                        {popupAcciones === plato.idPlato && popupTipo === 'plato' && (
+                          <div className="acciones-popup">
+                            <button className="popup-opcion popup-editar" onClick={() => { abrirEditarPlato(plato); setPopupAcciones(null); }}>
+                              ✏️ Editar
+                            </button>
+                            <button
+                              className={`popup-opcion ${plato.disponible ? 'popup-desactivar' : 'popup-activar'}`}
+                              onClick={() => { toggleDisponibilidadPlato(plato); setPopupAcciones(null); }}
+                            >
+                              {plato.disponible ? '🔴 Desactivar' : '🟢 Activar'}
+                            </button>
+                            <button className="popup-opcion popup-eliminar" onClick={() => { eliminarPlato(plato.idPlato); setPopupAcciones(null); }}>
+                              🗑️ Eliminar
+                            </button>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -614,12 +796,31 @@ function Admin() {
                       </td>
                       <td className="acciones-cell">
                         <button
-                          className={`btn-toggle ${loc.activo ? 'btn-toggle-desactivar' : 'btn-toggle-activar'}`}
-                          onClick={() => toggleActivoLocalizacion(loc)}
+                          className="btn-acciones"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPopupAcciones(loc.idLocalizacion);
+                            setPopupTipo('localizacion');
+                          }}
                         >
-                          {loc.activo ? 'Desactivar' : 'Activar'}
+                          ⚙️
                         </button>
-                        <button className="btn-eliminar" onClick={() => eliminarLocalizacion(loc.idLocalizacion)}>Eliminar</button>
+                        {popupAcciones === loc.idLocalizacion && popupTipo === 'localizacion' && (
+                          <div className="acciones-popup">
+                            <button className="popup-opcion popup-editar" onClick={() => { abrirEditarLocalizacion(loc); setPopupAcciones(null); }}>
+                              ✏️ Editar
+                            </button>
+                            <button
+                              className={`popup-opcion ${loc.activo ? 'popup-desactivar' : 'popup-activar'}`}
+                              onClick={() => { toggleActivoLocalizacion(loc); setPopupAcciones(null); }}
+                            >
+                              {loc.activo ? '🔴 Desactivar' : '🟢 Activar'}
+                            </button>
+                            <button className="popup-opcion popup-eliminar" onClick={() => { eliminarLocalizacion(loc.idLocalizacion); setPopupAcciones(null); }}>
+                              🗑️ Eliminar
+                            </button>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -657,7 +858,7 @@ function Admin() {
               </div>
               <div className="modal-actions">
                 <button onClick={guardarEstado} className="btn-primary">Guardar</button>
-                <button onClick={cerrarModal} className="btn-secondary">Cancelar</button>
+                
               </div>
             </div>
           </div>
@@ -679,12 +880,14 @@ function Admin() {
                 <p><strong>Pago:</strong> {pedidoDetalle.metodoPago === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}</p>
                 <p><strong>Fecha:</strong> {formatearFechaHora(pedidoDetalle.fechaHoraInicio)}</p>
                 <p><strong>Estado:</strong>
-                  <span className={`estado-badge ${pedidoDetalle.estado === 'activo' ? 'estado-pendiente' : 'estado-completada'}`} style={{ marginLeft: '0.5rem' }}>
-                    {pedidoDetalle.estado === 'activo' ? 'En curso' : 'Finalizado'}
+                  <span className={`estado-badge estado-${pedidoDetalle.estado}`} style={{ marginLeft: '0.5rem' }}>
+                    {pedidoDetalle.estado === 'recibido' ? 'Recibido' :
+                     pedidoDetalle.estado === 'en_preparacion' ? 'En preparación' :
+                     pedidoDetalle.estado === 'en_camino' ? 'En camino' :
+                     pedidoDetalle.estado === 'entregado' ? 'Entregado' : 'Finalizado'}
                   </span>
                 </p>
               </div>
-
               <h4 style={{ color: 'var(--blanco)', margin: '1.5rem 0 0.8rem', letterSpacing: '1px' }}>Platos pedidos</h4>
               <div className="pedido-detalle-platos">
                 {pedidoDetalle.detalles?.map(detalle => (
@@ -696,16 +899,22 @@ function Admin() {
                 ))}
                 <div className="pedido-detalle-total">
                   <span>Total</span>
-                  <span>
-                    {pedidoDetalle.detalles?.reduce((acc, d) => acc + d.plato.precio * d.cantidad, 0).toFixed(2)}€
-                  </span>
+                  <span>{pedidoDetalle.detalles?.reduce((acc, d) => acc + d.plato.precio * d.cantidad, 0).toFixed(2)}€</span>
                 </div>
               </div>
-
               <div className="modal-actions">
-                {pedidoDetalle.estado === 'activo' && (
-                  <button className="btn-primary" onClick={() => { cambiarEstadoPedido(pedidoDetalle.idPedido, 'finalizado'); setShowModalPedido(false); }}>
-                    Marcar como finalizado
+                {pedidoDetalle.estado !== 'entregado' && pedidoDetalle.estado !== 'finalizado' && (
+                  <button className="btn-primary" onClick={() => {
+                    const siguienteEstado =
+                      pedidoDetalle.estado === 'recibido' ? 'en_preparacion' :
+                      pedidoDetalle.estado === 'en_preparacion' ? 'en_camino' :
+                      pedidoDetalle.estado === 'en_camino' ? 'entregado' : 'finalizado';
+                    cambiarEstadoPedido(pedidoDetalle.idPedido, siguienteEstado);
+                    setShowModalPedido(false);
+                  }}>
+                    {pedidoDetalle.estado === 'recibido' ? 'Marcar en preparación' :
+                     pedidoDetalle.estado === 'en_preparacion' ? 'Marcar en camino' :
+                     pedidoDetalle.estado === 'en_camino' ? 'Marcar como entregado' : 'Finalizar'}
                   </button>
                 )}
                 <button className="btn-secondary" onClick={() => setShowModalPedido(false)}>Cerrar</button>
@@ -744,15 +953,92 @@ function Admin() {
                 </select>
               </div>
               <div className="form-group">
-                <label>URL de la imagen</label>
-                <input type="text" name="imagenUrl" value={nuevoPlato.imagenUrl} onChange={handleNuevoPlatoChange} placeholder="https://..." />
-                {nuevoPlato.imagenUrl && (
-                  <img src={nuevoPlato.imagenUrl} alt="Preview" className="imagen-preview" onError={(e) => e.target.style.display = 'none'} />
+                <label>Imagen del plato</label>
+                <input type="file" accept="image/*" onChange={(e) => setImagenFile(e.target.files[0])} className="input-file" />
+                {(imagenPreview || nuevoPlato.imagenUrl) && (
+                  <img src={imagenPreview || nuevoPlato.imagenUrl} alt="Preview" className="imagen-preview" onError={(e) => e.target.style.display = 'none'} />
                 )}
               </div>
               <div className="modal-actions">
                 <button onClick={crearPlato} className="btn-primary">Crear Plato</button>
-                <button onClick={() => setShowModalPlato(false)} className="btn-secondary">Cancelar</button>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== MODAL EDITAR PLATO ===== */}
+      {showModalEditarPlato && platoEditando && (
+        <div className="modal" onClick={(e) => e.target.className === 'modal' && setShowModalEditarPlato(false)}>
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModalEditarPlato(false)}>&times;</span>
+            <h3>Editar Plato</h3>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Nombre *</label>
+                <input type="text" name="nombre" value={platoEditando.nombre} onChange={handleEditarPlatoChange} placeholder="Nombre del plato" />
+              </div>
+              <div className="form-group">
+                <label>Descripción</label>
+                <textarea name="descripcion" value={platoEditando.descripcion || ''} onChange={handleEditarPlatoChange} placeholder="Descripción del plato" rows="3" />
+              </div>
+              <div className="form-group">
+                <label>Precio (€) *</label>
+                <input type="number" name="precio" value={platoEditando.precio} onChange={handleEditarPlatoChange} placeholder="0.00" step="0.01" min="0" />
+              </div>
+              <div className="form-group">
+                <label>Categoría *</label>
+                <select name="categoria" value={platoEditando.categoria.idCategoria} onChange={handleEditarPlatoChange}>
+                  <option value="">Selecciona una categoría</option>
+                  {categorias.map(cat => (
+                    <option key={cat.idCategoria} value={cat.idCategoria}>{cat.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="modal-actions">
+                <button onClick={guardarEdicionPlato} className="btn-primary">Guardar cambios</button>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== MODAL EDITAR LOCALIZACION ===== */}
+      {showModalEditarLocalizacion && localizacionEditando && (
+        <div className="modal" onClick={(e) => e.target.className === 'modal' && setShowModalEditarLocalizacion(false)}>
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModalEditarLocalizacion(false)}>&times;</span>
+            <h3>Editar Localización</h3>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Nombre *</label>
+                <input type="text" name="nombre" value={localizacionEditando.nombre} onChange={handleEditarLocalizacionChange} placeholder="Nombre del restaurante" />
+              </div>
+              <div className="form-group">
+                <label>Ciudad *</label>
+                <input type="text" name="ciudad" value={localizacionEditando.ciudad} onChange={handleEditarLocalizacionChange} placeholder="Ciudad" />
+              </div>
+              <div className="form-group">
+                <label>Dirección *</label>
+                <input type="text" name="direccion" value={localizacionEditando.direccion} onChange={handleEditarLocalizacionChange} placeholder="Calle y número" />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono" value={localizacionEditando.telefono || ''} onChange={handleEditarLocalizacionChange} placeholder="600 000 000" />
+              </div>
+              <div className="form-group">
+                <label>Horario apertura</label>
+                <input type="time" name="horarioApertura" value={localizacionEditando.horarioApertura || ''} onChange={handleEditarLocalizacionChange} />
+              </div>
+              <div className="form-group">
+                <label>Horario cierre</label>
+                <input type="time" name="horarioCierre" value={localizacionEditando.horarioCierre || ''} onChange={handleEditarLocalizacionChange} />
+              </div>
+              <div className="modal-actions">
+                <button onClick={guardarEdicionLocalizacion} className="btn-primary">Guardar cambios</button>
+  
               </div>
             </div>
           </div>
@@ -791,8 +1077,7 @@ function Admin() {
                 <input type="time" name="horarioCierre" value={nuevaLocalizacion.horarioCierre} onChange={handleNuevaLocalizacionChange} />
               </div>
               <div className="modal-actions">
-                <button onClick={crearLocalizacion} className="btn-primary">Crear Localización</button>
-                <button onClick={() => setShowModalLocalizacion(false)} className="btn-secondary">Cancelar</button>
+                <button onClick={crearLocalizacion} className="btn-primary">Crear</button>
               </div>
             </div>
           </div>

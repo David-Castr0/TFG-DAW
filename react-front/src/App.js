@@ -25,7 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/menu" element={<Menu carrito={carrito} setCarrito={setCarrito} />} />
           <Route path="/localizaciones" element={<Localizaciones />} />
-          <Route path="/reservas" element={<Reservas />} />
+          <Route path="/reservas/:idLocalizacion" element={<Reservas />} />
           <Route path="/mis-reservas" element={<MisReservas />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -1,12 +1,25 @@
+/* =========================================
+   INDEX.CSS - Estilos base del documento
+   Proyecto: Sushimi - TFG DAW
+   Descripción: Reset básico del body y
+   fuente para bloques de código
+   ========================================= */
+ 
+ 
+/* ===== ESTILOS BASE DEL BODY ===== */
+/* Eliminamos el margen por defecto del navegador */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  /* Mejora el renderizado de fuentes en navegadores webkit */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+ 
+/* ===== FUENTE PARA CÓDIGO ===== */
+/* Se usa para mostrar fragmentos de código en la aplicación */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -71,7 +71,7 @@ function Home() {
           <p className="hero-subtitle">Descubre el verdadero sabor de Japón en cada bocado</p>
           <div className="hero-buttons">
             <a href="/menu" className="btn-primary">Ver Menú</a>
-            <a href="/reservas" className="btn-secondary">Reservar Mesa</a>
+            
           </div>
         </div>
         <div className="scroll-indicator" onClick={scrollToAbout}>
@@ -151,7 +151,7 @@ function Home() {
             )}
           </div>
           <div className="section-footer">
-            <a href="/menu" className="btn-primary">Ver Menú Completo</a>
+            <a href="/menu" className="btn-primary">Ver Menú </a>
           </div>
         </div>
       </section>
@@ -232,7 +232,7 @@ function Home() {
           <div className="cta-content">
             <h2>¿Listo para una Experiencia Única?</h2>
             <p>Reserva tu mesa ahora y descubre por qué somos el restaurante japonés favorito</p>
-            <a href="/reservas" className="btn-cta">Reservar Ahora</a>
+            <a href="/localizaciones" className="btn-cta">Reservar Ahora</a>
           </div>
         </div>
       </section>

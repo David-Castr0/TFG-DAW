@@ -39,7 +39,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             requestURI.startsWith("/api/categorias/") ||
             requestURI.startsWith("/api/localizaciones/") ||
             requestURI.startsWith("/api/mesas/") ||
-            requestURI.startsWith("/api/reservas/")) {
+            requestURI.startsWith("/api/reservas/")|| 
+            requestURI.startsWith("/api/pedidos/") ||         // 
+            requestURI.startsWith("/api/detalle-pedidos/")) { // 
             
             chain.doFilter(request, response);
             return; // Salir sin validar token

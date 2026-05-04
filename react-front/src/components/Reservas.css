@@ -1,102 +1,121 @@
-/* ===== RESERVAS PAGE ===== */
+ CSS
+Copiar
+
+/* =========================================
+   RESERVAS.CSS - Estilos del formulario de reservas
+   Proyecto: Sushimi - TFG DAW
+   Descripción: Hero, formulario de datos personales
+   y detalles de la reserva, y confirmación
+   ========================================= */
+ 
+ 
+/* ===== PÁGINA PRINCIPAL ===== */
 .reservas-page {
-    min-height: 100vh;
-    background-color: var(--negro);
+  min-height: 100vh;
+  background-color: var(--negro);
 }
-
-/* ===== HERO SECTION ===== */
+ 
+ 
+/* ===== HERO DE RESERVAS ===== */
 .hero-reservas {
-    height: 300px;
-    background-color: var(--gris-oscuro);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 300px;
+  background-color: var(--gris-oscuro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.hero-reservas .hero-overlay {
-    text-align: center;
-}
-
+ 
 .hero-reservas .hero-content h2 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: var(--blanco);
-    letter-spacing: 3px;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--blanco);
+  letter-spacing: 3px;
+  text-align: center;
 }
-
+ 
 .hero-reservas .hero-content p {
-    font-size: 1.2rem;
-    color: var(--plata-claro);
-    letter-spacing: 1px;
+  font-size: 1.2rem;
+  color: var(--plata-claro);
+  letter-spacing: 1px;
+  text-align: center;
 }
-
-/* ===== SECCIÓN DE RESERVA ===== */
+ 
+ 
+/* ===== SECCIÓN DEL FORMULARIO ===== */
 .reservation-section {
-    padding: 4rem 0;
-    min-height: 60vh;
+  padding: 4rem 0;
+  min-height: 60vh;
 }
-
+ 
+/* Caja principal del formulario */
 .reservation-form-container {
-    max-width: 700px;
-    margin: 0 auto;
-    background-color: var(--gris-medio);
-    border-radius: 4px;
-    padding: 3rem;
-    border: 1px solid var(--gris-oscuro);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: var(--gris-medio);
+  border-radius: 4px;
+  padding: 3rem;
+  border: 1px solid var(--gris-oscuro);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
-
+ 
+/* Título del formulario con línea roja debajo */
 .form-title {
-    font-size: 2rem;
-    color: var(--blanco);
-    margin-bottom: 2rem;
-    text-align: center;
-    letter-spacing: 2px;
-    border-bottom: 2px solid var(--rojo-japones);
-    padding-bottom: 1rem;
+  font-size: 2rem;
+  color: var(--blanco);
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 2px;
+  border-bottom: 2px solid var(--rojo-japones);
+  padding-bottom: 1rem;
 }
-
-/* ===== FORMULARIO ===== */
+ 
+ 
+/* ===== FORMULARIO EN SÍ ===== */
 .reservation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
-
+ 
+/* Cada sección agrupa campos relacionados */
 .form-section {
-    background-color: rgba(10, 10, 10, 0.3);
-    padding: 2rem;
-    border-radius: 4px;
-    border: 1px solid var(--gris-oscuro);
+  background-color: rgba(10, 10, 10, 0.3);
+  padding: 2rem;
+  border-radius: 4px;
+  border: 1px solid var(--gris-oscuro);
 }
-
+ 
+/* Título de cada sección del formulario */
 .section-title {
-    font-size: 1.2rem;
-    color: var(--rojo-japones);
-    margin-bottom: 1.5rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  font-size: 1.2rem;
+  color: var(--rojo-japones);
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
-
+ 
+/* Cada campo individual del formulario */
 .form-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
-
+ 
+/* Dos campos en la misma fila */
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
-
+ 
 .form-group label {
-    display: block;
-    color: var(--plata-claro);
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  display: block;
+  color: var(--plata-claro);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
-
+ 
+/* Todos los tipos de input del formulario */
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
@@ -105,182 +124,196 @@
 .form-group input[type="number"],
 .form-group select,
 .form-group textarea {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: var(--gris-oscuro);
-    border: 1px solid var(--gris-medio);
-    color: var(--blanco);
-    font-size: 1rem;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    font-family: var(--font-primary);
+  width: 100%;
+  padding: 0.8rem;
+  background-color: var(--gris-oscuro);
+  border: 1px solid var(--gris-medio);
+  color: var(--blanco);
+  font-size: 1rem;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
 }
-
+ 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    outline: none;
-    border: 1px solid var(--rojo-japones);
-    box-shadow: 0 0 10px rgba(184, 0, 31, 0.3);
+  outline: none;
+  border-color: var(--rojo-japones);
+  box-shadow: 0 0 10px rgba(184, 0, 31, 0.3);
 }
-
+ 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: var(--plata);
-    opacity: 0.5;
+  color: var(--plata);
+  opacity: 0.5;
 }
-
+ 
+/* Select deshabilitado cuando no hay localización elegida */
 .form-group select:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
-
+ 
 .form-group textarea {
-    resize: vertical;
+  resize: vertical;
 }
-
-/* ===== BOTÓN DE ENVÍO ===== */
+ 
+/* Input de solo lectura para mostrar la localización preseleccionada */
+.input-disabled {
+  background-color: var(--gris-medio) !important;
+  color: var(--plata) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+ 
+ 
+/* ===== BOTÓN DE CONFIRMAR RESERVA ===== */
 .submit-btn {
-    width: 100%;
-    background-color: var(--rojo-japones);
-    color: var(--blanco);
-    padding: 1rem 2rem;
-    border: 2px solid var(--rojo-japones);
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
-    font-family: var(--font-primary);
+  width: 100%;
+  background-color: var(--rojo-japones);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+  border: 2px solid var(--rojo-japones);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  font-family: var(--font-primary);
 }
-
+ 
 .submit-btn:hover:not(:disabled) {
-    background-color: transparent;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(184, 0, 31, 0.3);
+  background-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(184, 0, 31, 0.3);
 }
-
+ 
 .submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
-
+ 
 .submit-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
-
-/* ===== MENSAJE DE CONFIRMACIÓN ===== */
+ 
+ 
+/* ===== PANTALLA DE CONFIRMACIÓN ===== */
+/* Se muestra cuando la reserva se ha creado correctamente */
 .confirmation-message {
-    text-align: center;
-    padding: 3rem;
+  text-align: center;
+  padding: 3rem;
 }
-
+ 
+/* Círculo verde con el tick de confirmación */
 .confirmation-icon {
-    width: 80px;
-    height: 80px;
-    background-color: #4CAF50;
-    color: var(--blanco);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    margin: 0 auto 2rem;
-    animation: scaleIn 0.5s ease;
+  width: 80px;
+  height: 80px;
+  background-color: #4CAF50;
+  color: var(--blanco);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto 2rem;
+  animation: scaleIn 0.5s ease;
 }
-
+ 
 @keyframes scaleIn {
-    from {
-        transform: scale(0);
-    }
-    to {
-        transform: scale(1);
-    }
+  from { transform: scale(0); }
+  to { transform: scale(1); }
 }
-
+ 
 .confirmation-message h3 {
-    font-size: 2rem;
-    color: var(--blanco);
-    margin-bottom: 1rem;
-    letter-spacing: 2px;
+  font-size: 2rem;
+  color: var(--blanco);
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
 }
-
+ 
 .confirmation-message p {
-    color: var(--plata);
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+  color: var(--plata);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
-
+ 
+/* Resumen de los datos de la reserva confirmada */
 .confirmation-details {
-    background-color: rgba(10, 10, 10, 0.5);
-    padding: 1.5rem;
-    border-radius: 4px;
-    border: 1px solid var(--gris-oscuro);
-    margin: 2rem 0;
-    text-align: left;
-    line-height: 2;
+  background-color: rgba(10, 10, 10, 0.5);
+  padding: 1.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--gris-oscuro);
+  margin: 2rem 0;
+  text-align: left;
+  line-height: 2;
 }
-
+ 
 .confirmation-details strong {
-    color: var(--rojo-japones);
+  color: var(--rojo-japones);
 }
-
+ 
+/* Botón para hacer otra reserva */
 .btn-secondary {
-    display: inline-block;
-    background-color: transparent;
-    color: var(--blanco);
-    border: 2px solid var(--plata);
-    padding: 1rem 2.5rem;
-    text-decoration: none;
-    font-size: 1rem;
-    letter-spacing: 1.5px;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1rem;
-    font-family: var(--font-primary);
+  display: inline-block;
+  background-color: transparent;
+  color: var(--blanco);
+  border: 2px solid var(--plata);
+  padding: 1rem 2.5rem;
+  text-decoration: none;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-family: var(--font-primary);
 }
-
+ 
 .btn-secondary:hover {
-    background-color: var(--plata);
-    color: var(--negro);
-    transform: translateY(-2px);
+  background-color: var(--plata);
+  color: var(--negro);
+  transform: translateY(-2px);
 }
-
+ 
+ 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .hero-reservas .hero-content h2 {
-        font-size: 2rem;
-    }
-    
-    .reservation-form-container {
-        padding: 2rem 1.5rem;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-section {
-        padding: 1.5rem;
-    }
+  .hero-reservas .hero-content h2 {
+    font-size: 2rem;
+  }
+ 
+  .reservation-form-container {
+    padding: 2rem 1.5rem;
+  }
+ 
+  /* En móvil los campos van en una sola columna */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+ 
+  .form-section {
+    padding: 1.5rem;
+  }
 }
-
+ 
 @media (max-width: 480px) {
-    .hero-reservas {
-        height: 250px;
-    }
-    
-    .form-title {
-        font-size: 1.5rem;
-    }
-    
-    .section-title {
-        font-size: 1rem;
-    }
+  .hero-reservas {
+    height: 250px;
+  }
+ 
+  .form-title {
+    font-size: 1.5rem;
+  }
+ 
+  .section-title {
+    font-size: 1rem;
+  }
 }
+ 

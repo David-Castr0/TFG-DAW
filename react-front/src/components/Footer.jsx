@@ -19,7 +19,7 @@ function Footer() {
             <ul className="footer-links">
               <li><a href="/menu">Menú</a></li>
               <li><a href="/localizaciones">Localizaciones</a></li>
-              <li><a href="/reservas">Reservar</a></li>
+              <li><a href="/localizaciones">Reservar</a></li>
               <li><a href="/mis-reservas">Mis Reservas</a></li>
             </ul>
           </div>
